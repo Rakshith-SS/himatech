@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head%}
+    <style>
+        .col{
+            border: 2px solid #000;
+            margin: 0.6rem;
+        }
+        p{
+            color: #393e46;
+        }
+    </style>
+{% endblock head%}
+{% block body %}
+    <div class="container">
+        <div class="row">
+        {% for item in items %}
+            <div class="col">
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    <img src="{{url_for('static', filename='images/product_images/'+ item.product_image)}}" alt="">
+                    <p>{{ item.product_name }}</p>
+                    <input type="hidden" name="getId" value={{ item.product_id }} >
+                    <p>Price &#8377; {{ item.product_price }}</p>
+                    <p>Quantity left: {{ item.product_quantity_left }}</p>
+                    <p>{{ form.submit(class="btn btn-primary") }}</p>
+                </form>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock body %}

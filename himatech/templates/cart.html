@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock head%}
+
+{% block body %} 
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-12">
+                {% for item in cart %}
+                    <img src="{{url_for('static', filename='images/product_images/'+ item.product_image)}}" alt=""> 
+                    <p>Product Quantity: {{ item.product_quantity }}</p>   
+                    <p>Product Price: {{ item.product_price }}</p>
+                {% endfor %}
+            </div>
+            <div class="col">
+               <p>Grand Total: {{ cartPrice }}</p>
+            </div>
+            <div class="checkout">
+                <button type="submit" class="btn btn-primary">CheckOut</button>
+            </div>
+        </div>
+    </div>   
+{% endblock body %}
