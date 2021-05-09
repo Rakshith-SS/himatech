@@ -1,25 +1,57 @@
 {% extends 'base.html' %}
 
 {% block head %}
-
+    <style>
+        .form-group{
+            margin: 10px 600px 0 0;      
+            }
+    </style>
 {% endblock head%}
 
 {% block body %} 
-    <div class="container">
-        <div class="row">
-            <div class="col col-lg-12">
-                {% for item in cart %}
-                    <img src="{{url_for('static', filename='images/product_images/'+ item.product_image)}}" alt=""> 
-                    <p>Product Quantity: {{ item.product_quantity }}</p>   
-                    <p>Product Price: {{ item.product_price }}</p>
-                {% endfor %}
+    <div class="container"> 
+        {% if cartPrice ==  0 %}
+            <div class="row">
+                <div class="col col-lg-12">
+                    <p>  Your Cart is Empty, Add Items to your cart </p>
+                    <a href=" {{ url_for('product')}} ">Products</a>
+                </div>
             </div>
-            <div class="col">
-               <p>Grand Total: {{ cartPrice }}</p>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <td>
+                            <p class="ml-5">{{ item.product_name }}</p>
+                            <img src="{{url_for('static', filename='images/product_images/'+ item.product_image) }}">
+                        </td>
+                        <td>{{ item.product_quantity }}</td>
+                        <td>{{ item.product_price }}</td>
+                        <form method="POST" novalidate>
+                            {{ form.hidden_tag() }}
+                            <input type="hidden" name="cartId" value="{{ item.cart_id }}">
+                            <td>{{form.submit(class="btn btn-danger") }} </td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <p>Grand Total: &#8377;{{ cartPrice  }}</p>
+                </div>
             </div>
-            <div class="checkout">
-                <button type="submit" class="btn btn-primary">CheckOut</button>
-            </div>
-        </div>
+            <hr>
+        {% endif %}
     </div>   
 {% endblock body %}

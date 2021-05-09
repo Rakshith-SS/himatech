@@ -1,6 +1,6 @@
 import os
 from flask import render_template,url_for, flash, request, redirect, session
-from himatech.forms import LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart
+from himatech.forms import LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, CheckOut 
 from datetime import datetime
 from himatech import app,db, ALLOWED_EXTENSIONS
 from flask_login import current_user, login_user,login_required,logout_user
@@ -83,12 +83,11 @@ def product():
         itemId = request.form.get('getId')
         cartItem = Items.query.get(itemId)
 
-        if cartItem.product_quantity_left is 0:
+        if cartItem.product_quantity_left == 0:
             flash(f"{cartItem.product_name} is out of stock", "danger")
             return redirect(url_for('product'))
         else: 
             cartItem.product_quantity_left = cartItem.product_quantity_left -1
-            db.session.commit()
             cart = Cart(username=current_user.username, 
                         email=current_user.email,
                         product_name = cartItem.product_name,
@@ -115,11 +114,28 @@ def product():
 @app.route('/cart', methods=['POST', 'GET'])
 @login_required
 def cart():
+    form = RemoveCartItem()
     cartItems = Cart.query.filter_by(username=current_user.username).all()
-    cartPrice = 0 
+    cartPrice = 0
     for cartItem in cartItems: 
         cartPrice += cartItem.product_price
-    return render_template('cart.html', cart=cartItems, cartPrice = cartPrice) 
+
+    if form.validate_on_submit():
+        cartId = request.form.get('cartId')
+        itemName = Cart.query.get(cartId)
+        product = Items.query.filter_by(product_name= itemName.product_name).first()
+        product.product_quantity_left += itemName.product_quantity
+        db.session.delete(itemName)
+        db.session.commit()
+        flash(f'{itemName.product_name} was successfully removed from your Cart', 'success')
+        return redirect(url_for('cart'))
+
+
+    
+    if cartPrice ==  0:
+        return render_template('cart.html', cart=cartItems, cartPrice= cartPrice)
+
+    return render_template('cart.html', cart=cartItems, cartPrice = cartPrice, form=form)   
 
 @app.errorhandler(404)
 def page_not_found(e):
