@@ -4,8 +4,10 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, valid
 from wtforms.validators import DataRequired, Email, Length, ValidationError
 from himatech.models import User, Items
 from flask_login import current_user
+import re
 
-specialCharacters = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '/', '\\', '{', '}', ':', ';', '"', "'", '<', '>', ',', '.', '?']
+namePattern = '^[a-zA-Z]\w+$'
+emailPattern = "^[a-zA-Z0-9_.]+[@][a-z]+(\.[a-z]+)?\.(com|net|edu|in|ch|org|info|fr|eu|io|de)" 
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -30,16 +32,23 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError(f'{username.data} is already taken')
 
-        usernameCharacters = list(username.data)
+        if re.search(namePattern, username.data):
+            pass
+        else:
+            raise ValidationError(f'{username.data} is not valid username')
 
-        for character in usernameCharacters:
-            if character in specialCharacters:
-                raise ValidationError(f'{username.data} should not contain any special characters other than underscore')
+        if re.search('^\d', username.data):
+            raise ValidationError(f'Username cannot begin with a number')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError(f'{email.data} is already taken')
+
+        if re.search(emailPattern, email.data):
+            pass
+        else:
+            raise ValidationError(f'{email.data} is an invalid email')
 
 class UpdateAccountInfo(FlaskForm):   
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=32)])
