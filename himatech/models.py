@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 
-
 @login.user_loader                          #loads the user from the database
 def load_user(id):
     return User.query.get(int(id))
@@ -18,7 +17,15 @@ class Cart(db.Model):
     product_quantity = db.Column(db.Integer)
     product_image = db.Column(db.String(100))
     product_price = db.Column(db.Integer)
-    checkout  = db.Column(db.String(5), default=False)
+    checkout  = db.Column(db.Boolean, default=False)
+    firstName = db.Column(db.String(30))
+    lastName = db.Column(db.String(30))
+    address = db.Column(db.String(300))
+    phoneNumber = db.Column(db.Integer)
+    country = db.Column(db.String(100), default="India")
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(30), default="Karnataka")
+
 
     def __repr__(self):
         return f'Cart ({self.username}, {self.product_name}, {self.product_price})'
@@ -26,7 +33,7 @@ class Cart(db.Model):
 class Items(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(32), unique=True)
-    product_desc = db.Column(db.String(500))
+    product_desc = db.Column(db.Text)
     product_price = db.Column(db.Integer)
     product_image = db.Column(db.String(100))
     product_quantity_left = db.Column(db.Integer)
@@ -57,4 +64,3 @@ class User(UserMixin ,db.Model):
 
     def get_id(self):
         return self.user_id
-

@@ -141,7 +141,7 @@ def cart():
     if checkOut.validate_on_submit():
         return redirect(url_for('checkout'))
 
-    return render_template('cart.html', cart=cartItems, cartPrice = cartPrice, form=form, checkOut=checkOut)   
+    return render_template('cart.html', cart=cartItems, cartPrice = cartPrice, form=form, checkOut=checkOut)
 
 @app.route('/checkout', methods=['POST', 'GET'])
 @login_required
