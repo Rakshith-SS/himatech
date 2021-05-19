@@ -18,7 +18,7 @@ class Cart(db.Model):
     product_quantity = db.Column(db.Integer)
     product_image = db.Column(db.String(100))
     product_price = db.Column(db.Integer)
-    checkout  = db.Column(db.String(4), default="False")
+    checkout  = db.Column(db.String(5), default=False)
 
     def __repr__(self):
         return f'Cart ({self.username}, {self.product_name}, {self.product_price})'

@@ -1,0 +1,299 @@
+{% extends 'base.html'%}
+
+{% block head%}
+<style>
+    .lh-condensed{
+        line-height: 1.25;
+    }
+    @import url("https://rsms.me/inter/inter.css");
+
+:root {
+  --color-gray: #737888;
+  --color-lighter-gray: #e3e5ed;
+  --color-light-gray: #f7f7fa;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Inter var", sans-serif;
+  }
+}
+
+body {
+  margin: 0;
+  background-image: url('trek.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+p {
+  color: var(--color-gray);
+}
+
+hr {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-light-gray);
+  border: 0;
+  margin: 2rem 0;
+}
+
+.container1 {
+  max-width: 40rem;
+  padding: 10vw 2rem 0;
+  margin-top: 0px;
+  height: 100vh;
+  background-color: #f2f2f2;
+  padding: 5px 20px 15px 20px;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  overflow: auto;
+  resize:vertical;
+}
+
+.form {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-lighter-gray);
+  padding: .5rem;
+  border-radius: .25rem;
+}
+
+.field__label {
+  color: var(--color-gray);
+  font-size: 17px;
+  font-weight: 300;
+  font-family: 'Staatliches', cursive;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem
+}
+
+.field__input {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+}
+.field:focus-within {
+  border-color: #000;
+}
+
+.fields {
+  display: grid;
+  grid-gap: 1rem;
+}
+.fields--2 {
+  grid-template-columns: 1fr 1fr;
+}
+.fields--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.button {
+  background-color: #000;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: block;
+  color: #fff;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+}
+.button:focus-visible {
+  background-color: #333;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width: 960px; margin-bottom:30px;" > 
+    <div class="py-5 text-center">
+        <h2>Checkout form</h2>
+        <p class="lead"><b>Please Enter your Shipping And Payment Details Below To Confirm Your Order.</b></p>
+    </div>
+    <div class="row">  
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Your cart</span>
+                <span class="badge badge-secondary badge-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3 sticky-top">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Product name</h6>
+                        <small class="text-muted">Brief description</small>
+                    </div>
+                    <span class="text-muted">₹ Price</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Second product</h6>
+                        <small class="text-muted">Brief description</small>
+                    </div>
+                    <span class="text-muted">₹ Price</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Third item</h6>
+                        <small class="text-muted">Brief description</small>
+                    </div>
+                    <span class="text-muted">₹ Price</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Total (in Rupees)</span>
+                    <strong>₹ total Price</strong>
+                </li>
+            </ul>
+           
+                   <div class="input-group-append">
+                        <button type="submit" class="btn btn-secondary" style="margin-left: 10 px; background-color:lightgreen;"><a href="cart module.html"> ← Go Back To Cart</a></button>
+                    </div>
+               
+        </div>
+        <div class="col-md-8 order-md-1">
+            <form class="needs-validation" novalidate="">
+                <div class="container1">
+                    <h4 class="mb-3" style="padding-top: 15px;">Billing address</h4>
+                    <div class="form">
+                      <div class="fields fields--2">
+                      <label class="field">
+                        <span class="field__label" for="firstname">First name</span>
+                        <input class="field__input" type="text" id="firstname" >
+                      </label>
+                      <label class="field">
+                        <span class="field__label" for="lastname">Last name</span>
+                        <input class="field__input" type="text" id="lastname">
+                      </label>
+                    </div>
+                    <label class="field">
+                      <span class="field__label" for="address">Address</span>
+                      <input class="field__input" type="text" id="address" />
+                    </label>
+                    <label class="field">
+                      <span class="field__label" for="Company">Company/Organization (Optional)</span>
+                      <input class="field__input" type="text" id="Company"/>
+                    </label>
+                    <label class="field">
+                      <span class="field__label" for="country">Country</span>
+                      <select class="field__input" id="country">
+                        <option value=""></option>
+                        <option value="India">India</option>
+                      </select>
+                    </label>
+                    <label class="field">
+                      <span class="field__label" for="ph.no">Contact(landline/Mobile)</span>
+                      <input class="field__input" type="text" id="ph.no"/>
+                    </label>
+                    <div class="fields fields--3">
+                      <label class="field">
+                        <span class="field__label" for="pincode">Pin code</span>
+                        <input class="field__input" type="text" id="pincode" />
+                      </label>
+                      <label class="field">
+                        <span class="field__label" for="city">City/District</span>
+                        <input class="field__input" type="text" id="city" />
+                      </label>
+                      <label class="field">
+                        <span class="field__label" for="state">State</span>
+                        <select class="field__input" id="state">
+                          <option value=""></option>
+                          <option value="Karnataka">Karnataka</option>
+                        </select>
+                      </label>
+                    </div>
+                    </div>
+                   </div>
+                <hr class="mb-4">
+                <h4 class="mb-3">Payment</h4>
+                <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                        <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"  required="" disabled>
+                        <label class="custom-control-label" for="credit" style="font-size: 19px;">Credit card</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="" disabled>
+                        <label class="custom-control-label" for="debit" style="font-size: 19px;">Debit card</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="paytm" name="paymentMethod" type="radio" class="custom-control-input" required="" disabled>
+                        <label class="custom-control-label" for="paypal" style="font-size: 19px;">PayTm</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="COD" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">
+                        <label class="custom-control-label" for="Cash" style="font-weight: bolder; font-size: 19px;" >Cash On Delivery</label>
+                        <p style="font-size: 16px; font-weight: var(--color-gray);">*The Online Payment Gateway Is Under Maintenance, Only COD mode of payment is Available As of now.Sorry For The Inconvenience</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-name"> <strike>Name on card</strike></label>
+                        <input type="text" class="form-control" id="cc-name" placeholder="" required="" disabled>
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback"> Name on card is required </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-number"><strike>Credit card number</strike></label>
+                        <input type="text" class="form-control" id="cc-number" placeholder="" required="" disabled>
+                        <div class="invalid-feedback"> Credit card number is required </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="cc-expiration"><strike>Expiration</strike></label>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required="" disabled> 
+                        <div class="invalid-feedback"> Expiration date required </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="cc-cvv"><strike>CVV</strike></label>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required="" disabled>
+                        <div class="invalid-feedback"> Security code required </div>
+                    </div>
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Confirm</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

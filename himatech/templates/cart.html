@@ -38,8 +38,8 @@
                         <td>{{ item.product_price }}</td>
                         <form method="POST" novalidate>
                             {{ form.hidden_tag() }}
-                            <input type="hidden" name="cartId" value="{{ item.cart_id }}">
-                            <td>{{form.submit(class="btn btn-danger") }} </td>
+                            <input type="hidden" name="cartId" value={{ item.cart_id }}>
+                            <td>{{ form.submit(class="btn btn-danger") }} </td>
                         </form>
                     </tr>
                     {% endfor %}
@@ -49,6 +49,14 @@
             <div class="row">
                 <div class="col col-lg-12">
                     <p>Grand Total: &#8377;{{ cartPrice  }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <form method="POST" novalidate>
+                        {{ checkOut.hidden_tag() }}
+                        {{ checkOut.submit(class="btn btn-success")}}
+                    </form>
                 </div>
             </div>
             <hr>

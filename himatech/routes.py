@@ -1,6 +1,8 @@
 import os
+import re
 from flask import render_template,url_for, flash, request, redirect, session
-from himatech.forms import LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, CheckOut 
+from flask.signals import got_request_exception
+from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout 
 from datetime import datetime
 from himatech import app,db, ALLOWED_EXTENSIONS
 from flask_login import current_user, login_user,login_required,logout_user
@@ -75,14 +77,13 @@ def product():
     form = AddToCart()    
     items = Items.query.all()
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and request.form.get('getId'):
         if current_user.is_authenticated is False:
             flash('Log in, To add items to Cart', 'warning')
             return redirect(url_for('login'))
-
+    
         itemId = request.form.get('getId')
         cartItem = Items.query.get(itemId)
-
         if cartItem.product_quantity_left == 0:
             flash(f"{cartItem.product_name} is out of stock", "danger")
             return redirect(url_for('product'))
@@ -115,13 +116,20 @@ def product():
 @login_required
 def cart():
     form = RemoveCartItem()
-    cartItems = Cart.query.filter_by(username=current_user.username).all()
+    checkOut = GoToCheckout()
+    cartItems = Cart.query.filter_by(username=current_user.username, checkout=0).all()
     cartPrice = 0
     for cartItem in cartItems: 
         cartPrice += cartItem.product_price
-
-    if form.validate_on_submit():
+    
+    if cartPrice ==  0:
+        return render_template('cart.html', cart=cartItems, cartPrice= cartPrice)
+               
+    if form.validate_on_submit() and request.form.get('cartId'):
         cartId = request.form.get('cartId')
+        cartExist = Cart.query.get(cartId)
+        if cartExist is None:
+            return "Nice, Tell me how you got here"
         itemName = Cart.query.get(cartId)
         product = Items.query.filter_by(product_name= itemName.product_name).first()
         product.product_quantity_left += itemName.product_quantity
@@ -129,14 +137,17 @@ def cart():
         db.session.commit()
         flash(f'{itemName.product_name} was successfully removed from your Cart', 'success')
         return redirect(url_for('cart'))
-
-
     
-    if cartPrice ==  0:
-        return render_template('cart.html', cart=cartItems, cartPrice= cartPrice)
+    if checkOut.validate_on_submit():
+        return redirect(url_for('checkout'))
 
-    return render_template('cart.html', cart=cartItems, cartPrice = cartPrice, form=form)   
+    return render_template('cart.html', cart=cartItems, cartPrice = cartPrice, form=form, checkOut=checkOut)   
 
+@app.route('/checkout', methods=['POST', 'GET'])
+@login_required
+def checkout():
+    return render_template('checkout.html')
+    
 @app.errorhandler(404)
 def page_not_found(e):
     return "404 Error"

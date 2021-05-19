@@ -73,6 +73,9 @@ class AddToCart(FlaskForm):
 class RemoveCartItem(FlaskForm):
     submit = SubmitField('Remove Item')
 
+class GoToCheckout(FlaskForm):
+    submit = SubmitField('Checkout')
+
 class CheckOut(FlaskForm):
     city = SelectField('Select City', choices= ['Indiranagar', 'Kormangala', 'Jaynagar', 'Sarjapur'] )
     street = IntegerField('Street Number', validators = [DataRequired(), Length(min=1, max=3)])
