@@ -1,4 +1,6 @@
-from datetime import datetime 
+from datetime import datetime
+
+from phonenumbers import phonenumber 
 from himatech import db,login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -47,6 +49,7 @@ class User(UserMixin ,db.Model):
     username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     avatar = db.Column(db.String(128), nullable=False, default="default.jpg")
+    phonenumber = db.Column(db.String(13))
     password_hash = db.Column(db.String(128))
 
     def set_password(self, password):

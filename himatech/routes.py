@@ -22,6 +22,37 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/signUpLogin', methods=['POST', 'GET'])
+def signUpLogin():
+    registerForm = RegistrationForm()
+    loginForm = LoginForm()
+
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    if registerForm.validate_on_submit() and request.form.get('register'): 
+        user = User(
+            username=registerForm.username.data.capitalize(),
+            email=registerForm.email.data, 
+            phonenumber= registerForm.mobileNumber.data
+            )
+        user.set_password(registerForm.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash(f"Successfully created account for {registerForm.username.data}", "success")
+        return redirect(url_for('index')) 
+    
+    if loginForm.validate_on_submit() and request.form.get('login'):
+        user = User.query.filter_by(email=loginForm.email.data).first()
+        if user is None or not user.check_password(loginForm.password.data):
+            flash('Invalid email or password', 'danger')
+            return redirect(url_for('signUpLogin'))
+        else:
+            login_user(user, remember=loginForm.remember_me.data)
+            flash(f'{user.username} has logged in successfully', 'success')
+            return redirect(url_for('index'))
+    return render_template('signUpLogin.html', registerForm=registerForm, loginForm=loginForm)
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegistrationForm()
@@ -32,8 +63,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(
-            f"Successfully created account for {form.username.data}", "success")
+        flash(f"Successfully created account for {form.username.data}", "success")
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 

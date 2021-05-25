@@ -1,5 +1,6 @@
 from flask import flash, redirect,url_for
 from flask_wtf import FlaskForm
+from phonenumbers import phonenumber
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
 from himatech.models import User, Items
@@ -27,7 +28,7 @@ class RegistrationForm(FlaskForm):
                             Length(min=6,max=32),
                             validators.EqualTo('confirm_password',
                             message='Passwords must match')])
-    
+    mobileNumber = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=13)])
     confirm_password = PasswordField(label="Repeat Password")
     submit = SubmitField('Register')
 
@@ -53,6 +54,22 @@ class RegistrationForm(FlaskForm):
             pass
         else:
             raise ValidationError(f'{email.data} is an invalid email')
+        
+    def validate_mobileNumber(self,mobileNumber):
+
+        numberExist = User.query.filter_by(phonenumber= mobileNumber.data).first()
+
+        if numberExist is not None:
+            raise ValidationError(f'{mobileNumber.data} is already taken')
+        if phone.match(mobileNumber.data):
+            mobile = phonenumbers.parse(mobileNumber.data, "IN")
+            checkNumber = phonenumbers.is_valid_number(mobile)
+            if checkNumber:
+                pass  #valid mobile Number
+            else:
+                raise ValidationError("Enter a valid phone Number")
+        else:
+            raise ValidationError("Phone Numbers must start 0, +91 or the 10 digit number itself")
 
 class UpdateAccountInfo(FlaskForm):   
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=32)])
@@ -97,14 +114,14 @@ class CheckOut(FlaskForm):
     firstName = StringField('First Name', validators=[DataRequired(), Length(min=6, max=32)])
     lastName = StringField('Last Name', validators=[DataRequired(), Length(min=3, max=32)])
     address = StringField('ADDRESS', validators=[DataRequired(), Length(min=15, max=300)])
-    mobileNumber = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=11)])
+    mobileNumber = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=13)])
     company = StringField('Company/Organisation Detail(Optional)')
     pincode = SelectField('Pincode',choices=["560008", "560025", "560026"] , validate_choice=True)
     city = SelectField('City',choices=["Indirangar", "Richmond", "Shantinagar"], validate_choice=True)
     submit = SubmitField('Confirm')
 
 
-    def validate_movi(self,mobileNumber):
+    def validate_mobileNumber(self,mobileNumber):
         if phone.match(mobileNumber.data):
             mobile = phonenumbers.parse(mobileNumber.data, "IN")
             checkNumber = phonenumbers.is_valid_number(mobile)

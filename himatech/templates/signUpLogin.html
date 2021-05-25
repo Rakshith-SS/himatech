@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signUpLogin.css')}}">
+<link href="https://fonts.googleapis.com/css2?family=Vollkorn&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form action="" method="POST" novalidate>
+			{{ loginForm.hidden_tag() }}
+			<img src="{{ url_for('static', filename='images/himatech-banner/h1.png') }}" class="img-fluid"
+				alt="Responsive image">
+			<hr>
+			<p id="hts" style="font-size: 27px; color: black;font-family: 'Vollkorn', serif;">Log In To Access Your Account</p>
+			
+			{{ loginForm.email(placeholder="Enter Email", id="trt") }}
+			{% for error in loginForm.email.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+
+			{{ loginForm.password(placeholder="Enter Password", id="trt") }}
+			{% for error in loginForm.password.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+			<label id=rmb>
+				<input type="checkbox" checked="checked" name="remember"> Remember me
+			</label>
+
+			<p style="color:slategrey">Forgot <a href="forgot_password.html"
+					style="color:dodgerblue; cursor: pointer;">password?</a></p>
+			<div class="button">
+				{{ loginForm.submit(class="button") }}
+			</div>
+			<input type="hidden" name="login" value=2>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form method="post" novalidate>
+			{{ registerForm.hidden_tag() }}
+			<h1 id="signup">Sign Up</h1>
+			<p id="hts">Please fill in this form to create an account.</p>
+			<hr>
+			{{ registerForm.username(placeholder="Enter Username")}}
+			{% for error in registerForm.username.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+			{{ registerForm.email(placeholder="Enter Email")}}
+			{% for error in registerForm.email.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+			{{ registerForm.password(placeholder="Enter Password ")}}
+			{% for error in registerForm.password.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+			{{ registerForm.confirm_password(placeholder="Confirm Password")}}
+			{% for error in registerForm.confirm_password.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+
+			{{ registerForm.mobileNumber(placeholder="Enter Mobile Number") }}
+			{% for error in registerForm.mobileNumber.errors %}
+				<p style="color: #ec4646">{{ error }}</p>
+			{% endfor %}
+			<input type="hidden" name="register" value="1">
+			{{ registerForm.submit }}
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>New to this Place?</h1>
+				<p>Join Us Now By clicking Below!</p>
+				<button class="ghost" id="signIn" style="cursor: pointer;">Sign Up</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Already Have An Account?</h1>
+				<p>Click Below to Log In with your Credentials </p>
+				<button class="ghost" id="signUp" style="cursor: pointer;">Sign In</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	const signUpButton = document.getElementById('signUp');
+	const signInButton = document.getElementById('signIn');
+	const container = document.getElementById('container');
+
+	signUpButton.addEventListener('click', () => {
+		container.classList.add("right-panel-active");
+	});
+
+	signInButton.addEventListener('click', () => {
+		container.classList.remove("right-panel-active");
+	});
+</script>
+
+{% endblock body %}
