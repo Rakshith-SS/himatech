@@ -27,7 +27,6 @@ class Cart(db.Model):
     pincode = db.Column(db.String(6))
     state = db.Column(db.String(30), default="Karnataka")
     checkoutTime = db.Column(db.DateTime, default=datetime.utcnow)
-
     def __repr__(self):
         return f'Cart ({self.username}, {self.product_name}, {self.product_price})'
 

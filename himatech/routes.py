@@ -99,11 +99,12 @@ def product():
                         product_name=cartItem.product_name,
                         product_quantity=1,
                         product_image=cartItem.product_image,
-                        product_price=cartItem.product_price
+                        product_price=cartItem.product_price,
+                        checkout = False
                         )
 
             itemExist = Cart.query.filter_by(
-                username=current_user.username, product_name=cartItem.product_name).first()
+                username=current_user.username, product_name=cartItem.product_name, checkout=False).first()
             if itemExist is not None:
                 cart = Cart.query.get(itemExist.cart_id)
                 cart.product_quantity += 1
@@ -123,14 +124,7 @@ def product():
 def cart():
     form = RemoveCartItem()
     checkOut = GoToCheckout()
-    cartItems = Cart.query.filter_by(
-        username=current_user.username, checkout=0).all()
-    cartPrice = 0
-    for cartItem in cartItems:
-        cartPrice += cartItem.product_price
-
-    if cartPrice == 0:
-        return render_template('cart.html', cart=cartItems, cartPrice=cartPrice)
+    cartItems = Cart.query.filter_by(username=current_user.username, checkout=False).all()
 
     if form.validate_on_submit() and request.form.get('cartId'):
         cartId = request.form.get('cartId')
@@ -149,7 +143,14 @@ def cart():
 
     if checkOut.validate_on_submit():
         return redirect(url_for('checkout'))
+    
 
+    cartPrice = 0
+    for cartItem in cartItems:
+        cartPrice += cartItem.product_price
+
+    if cartPrice == 0:
+        return render_template('cart.html', cart=cartItems, cartPrice=cartPrice)
     return render_template('cart.html', cart=cartItems, cartPrice=cartPrice, form=form, checkOut=checkOut)
 
 
@@ -157,6 +158,7 @@ def cart():
 @login_required
 def checkout():
     cart = Cart.query.filter_by(username=current_user.username, checkout=False).all()
+    totalCartItems = len(cart)
     form = CheckOut()
     cartPrice = 0
     for cartItem in cart:
@@ -174,6 +176,7 @@ def checkout():
             item.phoneNumber = form.mobileNumber.data
             item.city = form.city.data
             item.pincode = form.pincode.data
+            item.checkoutTime = datetime.now()
             checkedItem = item
             db.session.add(checkedItem)
         db.session.commit()
@@ -184,8 +187,10 @@ def checkout():
             db.session.add(checkedItem)
         db.session.commit()
         flash("Shopped Successfully ", "success")
-        return redirect(url_for('checkout'))
-    return render_template('checkout.html', form=form, cart=cart)
+        return redirect(url_for('index'))
+    
+    return render_template('checkout.html', form=form, cart=cart, cartPrice=cartPrice, totalCartItems=totalCartItems)
+
 
 
 @app.errorhandler(404)

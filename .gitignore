@@ -1,4 +1,6 @@
 flaskapp
+.vscode
+migrations
 **/__pycache__/*
 *.pyc
 *.mako
