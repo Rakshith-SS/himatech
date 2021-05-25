@@ -1,5 +1,4 @@
-import os
-from datetime import datetime
+from datetime import datetime 
 from himatech import db,login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -22,10 +21,12 @@ class Cart(db.Model):
     lastName = db.Column(db.String(30))
     address = db.Column(db.String(300))
     phoneNumber = db.Column(db.Integer)
+    company = db.Column(db.String(150))
     country = db.Column(db.String(100), default="India")
     city = db.Column(db.String(100))
+    pincode = db.Column(db.String(6))
     state = db.Column(db.String(30), default="Karnataka")
-
+    checkoutTime = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f'Cart ({self.username}, {self.product_name}, {self.product_price})'
