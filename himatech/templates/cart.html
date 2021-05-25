@@ -38,7 +38,7 @@
                         <td>{{ item.product_price }}</td>
                         <form method="POST" novalidate>
                             {{ form.hidden_tag() }}
-                            <input type="hidden" name="cartId" value={{ item.cart_id }}>
+                            <input type="hidden" name="cartId" value="{{ item.cart_id }}">
                             <td>{{ form.submit(class="btn btn-danger") }} </td>
                         </form>
                     </tr>
