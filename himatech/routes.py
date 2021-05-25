@@ -53,38 +53,6 @@ def signUpLogin():
             return redirect(url_for('index'))
     return render_template('signUpLogin.html', registerForm=registerForm, loginForm=loginForm)
 
-@app.route('/register', methods=['POST', 'GET'])
-def register():
-    form = RegistrationForm()
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash(f"Successfully created account for {form.username.data}", "success")
-        return redirect(url_for('index'))
-    return render_template('register.html', form=form)
-
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid email or password', 'danger')
-            return redirect(url_for('login'))
-        else:
-            login_user(user, remember=form.remember_me.data)
-            flash(f'{user.username} has logged in successfully', 'success')
-            return redirect(url_for('index'))
-
-    return render_template('login.html', form=form)
-
 
 @app.route('/logout')
 def logout():
