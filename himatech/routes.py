@@ -1,11 +1,11 @@
 import os
-import re
+import secrets
 from flask import render_template, url_for, flash, request, redirect, session
 from flask.signals import got_request_exception
 from sqlalchemy.orm import query
-from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout
+from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout, CancelOrder
 from datetime import datetime
-from himatech import app, db, ALLOWED_EXTENSIONS
+from himatech import app, db, UPLOAD_FOLDER
 from flask_login import current_user, login_user, login_required, logout_user
 from himatech.models import User, Items, Cart
 from werkzeug.utils import secure_filename
@@ -59,14 +59,23 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+# generates a random name for a picture upload and saves it to "profile_pictures" directory
+def saveProfilePic(picture):
+    randomName = secrets.token_hex(16)
+    fileName, fileExtension = os.path.splitext(picture.filename)
+    pictureName = randomName + fileExtension
+    picture.save(os.getcwd() + "/himatech/static/images/profile_pictures/" + pictureName)
+    return pictureName
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountInfo()
-    avatar = url_for(
-        'static', filename='/images/profile_pictures/'+current_user.avatar)
+    avatar = url_for('static', filename='/images/profile_pictures/'+current_user.avatar)
     if form.validate_on_submit():
+        if form.picture.data:
+            picture = saveProfilePic(form.picture.data)
+            current_user.avatar = picture
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -148,7 +157,7 @@ def cart():
         cartPrice += cartItem.product_price
 
     if cartPrice == 0:
-        return render_template('cart.html', cart=cartItems, cartPrice=cartPrice)
+        return render_template('emptyorder.html')
     return render_template('cart.html', cart=cartItems, cartPrice=cartPrice, form=form, checkOut=checkOut)
 
 
@@ -174,7 +183,8 @@ def checkout():
             item.phoneNumber = form.mobileNumber.data
             item.city = form.city.data
             item.pincode = form.pincode.data
-            item.checkoutTime = datetime.now()
+            item.checkoutTime = datetime.now().replace(microsecond=0)
+            item.invoiceNumber = secrets.token_hex(3)
             checkedItem = item
             db.session.add(checkedItem)
         db.session.commit()
@@ -189,13 +199,37 @@ def checkout():
     
     return render_template('checkout.html', form=form, cart=cart, cartPrice=cartPrice, totalCartItems=totalCartItems)
 
+@app.route('/orders', methods=["GET", "POST"])
+@login_required
+def orders():
+    form = CancelOrder()
+    orders = Cart.query.filter_by(email=current_user.email, checkout=True).all()
+    
+    checkedOutTime = []
+    shoppedItems = []
+    price = []
+    for item in orders:
+        if item.checkoutTime not in checkedOutTime:
+            checkedOutTime.append(item.checkoutTime)
+            price.append(item.product_price)
+    for orderedTime in checkedOutTime:
+        shoppedItems.append(Cart.query.filter_by(email=current_user.email, checkout=True, checkoutTime=orderedTime).all() )
 
+    if request.method=='POST':
+        flash("Under Construction", "danger")
+    return render_template('purchase.html', shoppedItems= shoppedItems, form=form)
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return "404 Error"
-
+# Error Pages
 
 @app.errorhandler(401)
 def unauthorised(e):
-    return "401 unauthorized"
+    return render_template('401.html')
+
+@app.errorhandler(403)
+def ForbiddenError(e):
+    return render_template('403.html')
+
+@app.errorhandler(404)
+def PageNotFound(e):
+    return render_template('404.html')
+

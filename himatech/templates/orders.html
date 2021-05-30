@@ -1,0 +1,341 @@
+{% extends 'base.html'%}
+
+{% block head%}
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>My-orders</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='' rel='stylesheet'>
+    <style>
+        body {
+            min-height: 100vh;
+            background-size: cover;
+            font-family: 'Lato', sans-serif;
+            color: rgba(116, 116, 116, 0.667);
+            background: linear-gradient(140deg, #fff, 50%, #ead0a6)
+        }
+
+        .container-fluid {
+            margin-top: 200px
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 7px
+        }
+
+        .small {
+            letter-spacing: 0.5px !important
+        }
+
+        .card-1 {
+            box-shadow: 2px 2px 10px 0px rgb(190, 108, 170)
+        }
+
+        hr {
+            background-color: rgba(248, 248, 248, 0.667)
+        }
+
+        .bold {
+            font-weight: 500
+        }
+
+        .change-color {
+            color: #AB47BC !important
+        }
+
+        .card-2 {
+            box-shadow: 1px 1px 3px 0px rgb(112, 115, 139)
+        }
+
+        .fa-circle.active {
+            font-size: 8px;
+            color: #AB47BC
+        }
+
+        .fa-circle {
+            font-size: 8px;
+            color: #aaa
+        }
+
+        .rounded {
+            border-radius: 2.25rem !important
+        }
+
+        .progress-bar {
+            background-color: #AB47BC !important
+        }
+
+        .progress {
+            height: 5px !important;
+            margin-bottom: 0
+        }
+
+        .invoice {
+            position: relative;
+            top: -70px
+        }
+
+        .Glasses {
+            position: relative;
+            top: -12px !important
+        }
+
+        .card-footer {
+            background-color: #AB47BC;
+            color: #fff
+        }
+
+        .date {
+            font-size: 11px
+        }
+
+        .divider {
+            height: 0px !important;
+            background-color: blue
+        }
+
+        .track-line {
+            height: 2px !important;
+            background-color: green
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin-left: 3px;
+            margin-right: 3px;
+            margin-top: 0px;
+            background-color: green;
+            border-radius: 50%;
+            display: inline-block
+        }
+
+        .big-dot {
+            height: 25px;
+            width: 25px;
+            margin-left: 0px;
+            margin-right: 0px;
+            margin-top: 0px;
+            background-color: green;
+            border-radius: 50%;
+            display: inline-block
+        }
+
+        .big-dot i {
+            font-size: 12px
+        }
+
+        h2 {
+            color: rgb(78, 0, 92);
+            letter-spacing: 2px !important
+        }
+
+        .display-3 {
+            font-weight: 500 !important
+        }
+
+        @media (max-width: 479px) {
+            .invoice {
+                position: relative;
+                top: 7px
+            }
+
+            .border-line {
+                border-right: 0px solid rgb(226, 206, 226) !important
+            }
+        }
+
+        @media (max-width: 700px) {
+            h2 {
+                color: rgb(78, 0, 92);
+                font-size: 17px
+            }
+
+            .display-3 {
+                font-size: 28px;
+                font-weight: 500 !important
+            }
+        }
+
+        .card-footer small {
+            letter-spacing: 7px !important;
+            font-size: 12px
+        }
+
+        .border-line {
+            border-right: 1px solid rgb(226, 206, 226)
+        }
+    </style>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'>
+    </script>
+    <script type='text/javascript'></script>
+</head>
+{% endblock %}
+
+{% block body%}
+<body oncontextmenu='return false' class='snippet-body'>
+    <div class="container-fluid my-5 d-flex justify-content-center">
+        <div class="card card-1">
+            <div class="card-header bg-white">
+                <div class="media flex-sm-row flex-column-reverse justify-content-between ">
+
+                    <h4 style="color: rgb(26, 23, 23); margin-top: 49px; font-weight:bolder;">Your Purchases</h4>
+
+                    <div class="col-auto text-center my-auto pl-0 pt-sm-4"> <img
+                            class="img-fluid my-auto align-items-center mb-0 pt-3" src="{{url_for('static', filename='images/orders/h1.png')}}" width="231"
+                            height="250">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-2">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="sq align-self-center "> <img
+                                            class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0"
+                                            src="{{url_for('static', filename='images/orders/p2.jpg')}}" width="135" height="135" /> </div>
+                                    <div class="media-body my-auto text-right">
+                                        <div class="row my-auto flex-column flex-md-row">
+                                            <div class="col my-auto">
+                                                <h6 class="mb-0"> Item Name</h6>
+                                            </div>
+                                            <div class="col my-auto"> <small>Qty : 1</small></div>
+                                            <div class="col my-auto">
+                                                <h6 class="mb-0">&#8377;3,600.00</h6>
+                                            </div>
+
+                                        </div>
+                                        <p class="mb-1" style="margin-top: 12px;"> <span>Invoice Number : <labelfor="">788152</label> </span></p>
+                                        <p class="mb-1"><span>Invoice Date :<label>22 Dec,2019</label></span></p>
+                                        <p class="mb-1"><span>Mode Of Payment:<label>COD</label></span></p>
+
+                                    </div>
+                                </div>
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bg-white">
+                                                <div
+                                                    class="d-flex flex-row justify-content-between align-items-center order">
+                                                    <div class="d-flex flex-column order-details"><span>Your order is on
+                                                            the way</span><span class="date"></span></div>
+                                                    <div class="tracking-details"><button
+                                                            class="btn btn-outline-primary btn-sm" type="button"
+                                                            style="background-color: rgb(192, 68, 93);">Cancel/Remove
+                                                            Order</button></div>
+                                                </div>
+                                                <hr class="divider mb-4">
+                                                <div
+                                                    class="d-flex flex-row justify-content-between align-items-center align-content-center">
+                                                    <span class="dot"></span>
+                                                    <hr class="flex-fill track-line"><span class="dot"></span>
+                                                    <hr class="flex-fill track-line"><span
+                                                        class="d-flex justify-content-center align-items-center big-dot dot"><i
+                                                            class="fa fa-check text-white"></i></span>
+                                                    <hr class="flex-fill track-line"><span class="dot"></span></div>
+                                                <div class="d-flex flex-row justify-content-between align-items-center">
+                                                    <div class="d-flex flex-column align-items-start">
+                                                        <span>"date"</span><span>Order placed</span></div>
+                                                    <div
+                                                        class="d-flex flex-column justify-content-center align-items-center">
+                                                        <span></span><span>Order Dispatched</span></div>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <span></span><span>Out for delivery</span></div>
+                                                    <div class="d-flex flex-column align-items-end"><span>Delivery
+                                                            By</span><span>" expected date"</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="card card-2">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="sq align-self-center "> <img
+                                            class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0"
+                                            src="{{url_for('static', filename='images/orders/p4.jpg')}}" width="135" height="135" /> </div>
+                                    <div class="media-body my-auto text-right">
+                                        <div class="row my-auto flex-column flex-md-row">
+                                            <div class="col-auto my-auto " style="text-align: left;">
+                                                <div class="row my-auto flex-column flex-md-row">
+                                                    <div class="col my-auto">
+                                                        <h6 class="mb-0"> Item Name</h6>
+                                                    </div>
+                                                    <div class="col my-auto"> <small>Qty : 1</small></div>
+                                                    <div class="col my-auto">
+                                                        <h6 class="mb-0">&#8377;3,600.00</h6>
+                                                    </div>
+                                                </div>
+    
+                                                <p class="mb-1" style="margin-top: 12px;"> <span>Invoice Number : <label
+                                                            for="">788152</label>
+                                                    </span></p>
+                                                <p class="mb-1"><span>Invoice Date :<label>22 Dec,2019</label></span>
+                                                </p>
+                                                <p class="mb-1"><span>Mode Of Payment:<label>COD</label></span></p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bg-white">
+                                                <div
+                                                    class="d-flex flex-row justify-content-between align-items-center order">
+                                                    <div class="d-flex flex-column order-details"><span>Your order has
+                                                            been delivered</span><span class="date">by DHFL on 21 Jan,
+                                                            2020</span></div>
+                                                    <div class="tracking-details"><button
+                                                            class="btn btn-outline-primary btn-sm" type="button"
+                                                            style="background-color: rgb(192, 68, 93);">Cancel/Remove
+                                                            Order</button></div>
+                                                </div>
+                                                <hr class="divider mb-4">
+                                                <div
+                                                    class="d-flex flex-row justify-content-between align-items-center align-content-center">
+                                                    <span class="dot"></span>
+                                                    <hr class="flex-fill track-line"><span class="dot"></span>
+                                                    <hr class="flex-fill track-line"><span class="dot"></span>
+                                                    <hr class="flex-fill track-line"><span
+                                                        class="d-flex justify-content-center align-items-center big-dot dot"><i
+                                                            class="fa fa-check text-white"></i></span></div>
+                                                <div class="d-flex flex-row justify-content-between align-items-center">
+                                                    <div class="d-flex flex-column align-items-start">
+                                                        <span>"date"</span><span>Order placed</span></div>
+                                                    <div
+                                                        class="d-flex flex-column justify-content-center align-items-center">
+                                                        <span></span><span>Order Dispatched</span></div>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <span></span><span>Out for delivery</span></div>
+                                                    <div class="d-flex flex-column align-items-end">
+                                                        <span>"date"</span><span>Delivered</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <h5>ADD FOOTER</h5>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

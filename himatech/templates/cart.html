@@ -1,65 +1,58 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block head %}
+<style>
+    .form-group {
+        margin: 10px 600px 0 0;
+    }
+</style>
+{% endblock head%} {% block body %}
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
 
-{% block head %}
-    <style>
-        .form-group{
-            margin: 10px 600px 0 0;      
-            }
-    </style>
-{% endblock head%}
-
-{% block body %} 
-    <div class="container"> 
-        {% if cartPrice ==  0 %}
-            <div class="row">
-                <div class="col col-lg-12">
-                    <p>  Your Cart is Empty, Add Items to your cart </p>
-                    <a href=" {{ url_for('product')}} ">Products</a>
-                </div>
-            </div>
-        {% else %}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Product</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    {% for item in cart %}
-                    <tr>
-                        <td>
-                            <p class="ml-5">{{ item.product_name }}</p>
-                            <img src="{{url_for('static', filename='images/product_images/'+ item.product_image) }}">
-                        </td>
-                        <td>{{ item.product_quantity }}</td>
-                        <td>{{ item.product_price }}</td>
-                        <form method="POST" novalidate>
-                            {{ form.hidden_tag() }}
-                            <input type="hidden" name="cartId" value="{{ item.cart_id }}">
-                            <td>{{ form.submit(class="btn btn-danger") }} </td>
-                        </form>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <hr>
-            <div class="row">
-                <div class="col col-lg-12">
-                    <p>Grand Total: &#8377;{{ cartPrice  }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-lg-12">
-                    <form method="POST" novalidate>
-                        {{ checkOut.hidden_tag() }}
-                        {{ checkOut.submit(class="btn btn-success")}}
-                    </form>
-                </div>
-            </div>
-            <hr>
-        {% endif %}
-    </div>   
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>
+                    <p class="ml-5">{{ item.product_name }}</p>
+                    <img
+                        src="{{url_for('static', filename='images/product_images/'+ item.product_image) }}"
+                    />
+                </td>
+                <td>{{ item.product_quantity }}</td>
+                <td>{{ item.product_price }}</td>
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    <input
+                        type="hidden"
+                        name="cartId"
+                        value="{{ item.cart_id }}"
+                    />
+                    <td>{{ form.submit(class="btn btn-danger") }}</td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr />
+    <div class="row">
+        <div class="col col-lg-12">
+            <p>Grand Total: &#8377;{{ cartPrice }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-12">
+            <form method="POST" novalidate>
+                {{ checkOut.hidden_tag() }} {{ checkOut.submit(class="btn
+                btn-success")}}
+            </form>
+        </div>
+    </div>
+    <hr />
+</div>
 {% endblock body %}

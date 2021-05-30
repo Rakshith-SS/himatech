@@ -1,0 +1,50 @@
+{% extends 'base.html' %} {%block head%} {% endblock head %} {% block body%}
+<div class="container">
+ {#    {% for item in shoppedItems %}
+        {% if item|length > 1 %}
+            {% for order in item %}
+                {{ order }}<br>
+            {% endfor%}
+        {% else %}
+            {% for order in item %}
+                {{ order }} <br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    #}
+    {% for item in shoppedItems %}
+        {% if item|length > 1%}
+            <div class="card w-50">
+                <div class="card-body">
+                    <h5 class="card-title">Invoice Date{{ item[0].checkoutTime.strftime("%d %b %Y %H:%M") }}</h5>
+                    <hr>
+                        {% for order in item %}
+                            <h5 class="card-title"> Product - {{ order.product_name }}</h5>
+                            <p class="card-text">Quantity - {{ order.product_quantity }}</p>
+                            <p class="card-text">Invoice Number - {{ order.invoiceNumber }}</p>
+                        {% endfor %}
+
+                        <form method="post" novalidate>
+                            {{ form.cancelOrder(class="btn btn-danger")}}
+                        </form>
+                    </div>
+                </div>
+        {% else %}     
+        <div class="card w-50">
+            <div class="card-body">
+                {% for order in item %}
+                    <h5 class="card-title">Invoice Date{{ order.checkoutTime.strftime("%d %b %Y %H:%M") }}</h5>
+                    <hr>
+                    <h5 class="card-title">Product - {{ order.product_name }}</h5>
+                    <p class="card-text">Quantity - {{ order.product_quantity }}</p>
+                    <p class="card-text">Invoice Number - {{ order.invoiceNumber }}</p>
+                    <form method="post" novalidate>
+                        {{ form.cancelOrder(class="btn btn-danger")}}
+                    </form>
+                {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock body%}

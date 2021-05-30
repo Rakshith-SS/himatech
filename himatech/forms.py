@@ -1,5 +1,6 @@
 from flask import flash, redirect,url_for
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from phonenumbers import phonenumber
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
@@ -74,6 +75,7 @@ class RegistrationForm(FlaskForm):
 class UpdateAccountInfo(FlaskForm):   
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=32)])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg','png', 'jpeg'])])
     submit = SubmitField('Update Account')
 
     def validate_username(self,username):
@@ -101,6 +103,8 @@ class UpdateAccountInfo(FlaskForm):
         else:
             raise ValidationError(f'{email.data} is an invalid email')
 
+    def validate_picture(self, picture):
+        pass
 class AddToCart(FlaskForm):
     submit = SubmitField('Add To Cart')
 
@@ -139,3 +143,6 @@ class CheckOut(FlaskForm):
     def ValidPincode(self, pincode):
         if pincode.data == "--Select Pincode--":
             raise ValidationError("Please Select a Pincode") 
+
+class CancelOrder(FlaskForm):
+    cancelOrder = SubmitField('Cancel Order')
