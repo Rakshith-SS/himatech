@@ -4,7 +4,7 @@ from flask import render_template, url_for, flash, request, redirect, session
 from flask.signals import got_request_exception
 from sqlalchemy.orm import query
 from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout, CancelOrder
-from datetime import datetime
+from datetime import datetime, timedelta
 from himatech import app, db, UPLOAD_FOLDER
 from flask_login import current_user, login_user, login_required, logout_user
 from himatech.models import User, Items, Cart
@@ -207,17 +207,35 @@ def orders():
     
     checkedOutTime = []
     shoppedItems = []
-    price = []
+    orderedPrice = 0
+    TotalPrice = []
+    DeliveryDate = []
     for item in orders:
         if item.checkoutTime not in checkedOutTime:
             checkedOutTime.append(item.checkoutTime)
-            price.append(item.product_price)
-    for orderedTime in checkedOutTime:
-        shoppedItems.append(Cart.query.filter_by(email=current_user.email, checkout=True, checkoutTime=orderedTime).all() )
 
+    
+    for orderedTime in checkedOutTime:
+        orderedItems = Cart.query.filter_by(email=current_user.email, checkout=True, checkoutTime=orderedTime).all()
+        shoppedItems.append(orderedItems) 
+        DeliveryDate.append(orderedTime + timedelta(days=3))
+   
+    #total price when more than two products are ordered at the same time
+    for items in shoppedItems:
+        if len(items) > 1:
+            for item in items:
+                orderedPrice += item.product_price        
+            TotalPrice.append(orderedPrice)
+            orderedPrice = 0
+        else:
+            for item in items:
+                TotalPrice.append(item.product_price)
+
+    itemCount = len(DeliveryDate)
     if request.method=='POST':
         flash("Under Construction", "danger")
-    return render_template('purchase.html', shoppedItems= shoppedItems, form=form)
+    
+    return render_template('myorders.html', shoppedItems= shoppedItems, form=form, DeliveryDate = DeliveryDate, TotalPrice=TotalPrice, itemCount = itemCount, checkedOutTime=checkedOutTime)
 
 # Error Pages
 

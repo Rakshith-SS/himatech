@@ -1,29 +1,24 @@
-{% extends 'base.html' %} {%block head%} {% endblock head %} {% block body%}
+{% extends 'base.html' %} {%block head%} 
+    <style>
+        .card{
+            margin-bottom: 20px;
+        }
+    </style>
+{% endblock head %} {% block body%}
 <div class="container">
- {#    {% for item in shoppedItems %}
-        {% if item|length > 1 %}
-            {% for order in item %}
-                {{ order }}<br>
-            {% endfor%}
-        {% else %}
-            {% for order in item %}
-                {{ order }} <br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    #}
     {% for item in shoppedItems %}
         {% if item|length > 1%}
             <div class="card w-50">
                 <div class="card-body">
-                    <h5 class="card-title">Invoice Date{{ item[0].checkoutTime.strftime("%d %b %Y %H:%M") }}</h5>
+                    <h5 class="card-title">Invoice Date - {{ checkedOutTime[loop.index -1 ].strftime("%d %b %Y %H:%M") }}</h5>
+                    <h5 class="card-title">Expected Delivery Date - {{ DeliveryDate[loop.index -1].strftime("%d %b %Y %H:%M")}}</h5>
                     <hr>
                         {% for order in item %}
                             <h5 class="card-title"> Product - {{ order.product_name }}</h5>
                             <p class="card-text">Quantity - {{ order.product_quantity }}</p>
-                            <p class="card-text">Invoice Number - {{ order.invoiceNumber }}</p>
+                            <p class="card-text">Invoice Number - #{{ order.invoiceNumber }}</p>
                         {% endfor %}
-
+                        <p class="card-text">Total Price: {{ TotalPrice[loop.index-1]}}</p>
                         <form method="post" novalidate>
                             {{ form.cancelOrder(class="btn btn-danger")}}
                         </form>
@@ -33,11 +28,14 @@
         <div class="card w-50">
             <div class="card-body">
                 {% for order in item %}
-                    <h5 class="card-title">Invoice Date{{ order.checkoutTime.strftime("%d %b %Y %H:%M") }}</h5>
+                    <h5 class="card-title">Invoice Date - {{ order.checkoutTime.strftime("%d %b %Y %H:%M") }}</h5>
+                    <h5 class="card-title">Expected Delivery Date - {{ DeliveryDate[loop.index -1].strftime("%d %b %Y") }}</h5>
                     <hr>
                     <h5 class="card-title">Product - {{ order.product_name }}</h5>
                     <p class="card-text">Quantity - {{ order.product_quantity }}</p>
-                    <p class="card-text">Invoice Number - {{ order.invoiceNumber }}</p>
+                    <p class="card-text">Invoice Number - #{{ order.invoiceNumber }}</p>
+                    <p class="card-text">Price - {{ order.product_price }}</p>
+                    <p class="card-text">Total Price - {{ order.product_price}}</p>
                     <form method="post" novalidate>
                         {{ form.cancelOrder(class="btn btn-danger")}}
                     </form>

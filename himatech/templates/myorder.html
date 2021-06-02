@@ -1,0 +1,105 @@
+{% extends 'base.html'%}
+
+{% block head%}
+{% endblock %}
+{% block body%}
+<style>
+  hr.new1 {
+    border-top: 2px dashed rgb(8, 8, 8);
+  }
+</style>
+
+<body>
+  <div style="width:50%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin: 2% auto; ">
+    <div class="card-header bg-white" style="margin-bottom: 12px;">
+      <div class="media flex-sm-row flex-column-reverse justify-content-between ">
+
+        <h4 style="color: rgb(26, 23, 23); margin-top: 49px; font-weight:bolder;">Your Purchases</h4>
+
+        <div class="col-auto text-center my-auto pl-0 pt-sm-4"> <img
+            class="img-fluid my-auto align-items-center mb-0 pt-3"
+            src="{{url_for('static', filename='images/orders/h1.png')}}" width="231" height="250">
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="card flex-md-row mb-4 box-shadow ">
+
+        <img class="card-img-right flex-auto d-none d-md-block" alt="Thumbnail [200x250]"
+          style="width: 210px; height: 200px;" src="{{url_for('static', filename='images/orders/p4.jpg')}}"
+          data-holder-rendered="true">
+        <div class="card-body d-flex flex-column align-items-start" style="margin-left: 30px;">
+
+          <h3 class="mb-0 text-dark" style="font-size: 25px;">
+            HP Printer x-2234
+          </h3>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Quantity</th>
+
+                <th scope="col">Invoice Number</th>
+                <th scope="col">Mode Of Payment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">1</th>
+                <td>397191</td>
+                <td>COD</td>
+
+
+              </tr>
+
+            </tbody>
+          </table>
+          <div class="d-flex flex-row justify-content-between align-items-center order">
+            <div class="d-flex flex-column order-details"><span>
+                <h4 class="mt-3 mb-4 bold"> <span class="mt-5">&#x20B9;</span> 1,500 <span class="small text-muted">
+                    (Incl.Gst) </span></h4>
+              </span><span class="date"></span></div>
+            
+          </div>
+
+
+
+        </div>
+
+
+
+      </div>
+      
+      <div class="container-fluid">
+        <div class="d-flex justify-content-between"><span class="theme-color" style="font-size: 21px; font-weight: bolder;">Payment Summary</span>
+          <div class="tracking-details" ><button type="button" class="btn btn-danger">Cancel
+            Order</button></div></div>
+        
+        <div class="mb-3">
+          <hr class="new1">
+        </div>
+        <article class="card">
+          <div class="card-body row">
+            <div class="col"> <strong>Order Placed On:</strong> <br>29 nov 2021 </div>
+            <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986
+            </div>
+            <div class="col"> <strong>Expected Delivery Date:</strong> <br>1 Dec 2021 </div>
+          </div>
+        </article>
+        <div class="d-flex justify-content-between" style="font-size: 14px;"> <span class="font-weight-bold">Hp Printer(Qty:1)</span> <span
+            class="text-muted">₹1500.00</span> </div>
+             
+        <div class="d-flex justify-content-between"> <small>Shipping</small> <small>₹75.00</small> </div>
+        <div class="d-flex justify-content-between mt-3" style="margin-bottom: 7px; font-size: 18px;"> <span
+            class="font-weight-bold">Total</span> <span class="font-weight-bold theme-color">₹1575.00</span> </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</body>
+
+
+
+{% endblock %}

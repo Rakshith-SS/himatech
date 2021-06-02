@@ -11,7 +11,7 @@ import phonenumbers
 
 
 namePattern = '^[a-zA-Z]\w+$'
-emailPattern = "^[a-zA-Z0-9_.]+[@][a-z]+(\.[a-z]+)?\.(com|net|edu|in|ch|org|info|fr|eu|io|de)" 
+emailPattern = "^[a-zA-Z0-9_.]+[@][a-z]+(\.[a-z]+)?\.(com|net|edu|in|ch|org|info|fr|eu|io|de)$" 
 numberPattern = r"^(\+91|0|)[0-9]{10}$"
 phone = re.compile(numberPattern)
 
@@ -115,8 +115,8 @@ class GoToCheckout(FlaskForm):
     submit = SubmitField('Checkout')
 
 class CheckOut(FlaskForm):
-    firstName = StringField('First Name', validators=[DataRequired(), Length(min=6, max=32)])
-    lastName = StringField('Last Name', validators=[DataRequired(), Length(min=3, max=32)])
+    firstName = StringField('First Name', validators=[DataRequired(), Length(min=3, max=32)])
+    lastName = StringField('Last Name', validators=[DataRequired(), Length(min=1, max=32)])
     address = StringField('ADDRESS', validators=[DataRequired(), Length(min=15, max=300)])
     mobileNumber = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=13)])
     company = StringField('Company/Organisation Detail(Optional)')
@@ -135,14 +135,6 @@ class CheckOut(FlaskForm):
                 raise ValidationError("Enter a valid phone Number")
         else:
             raise ValidationError("Phone Numbers must start 0, +91 or the 10 digit number itself")
-
-    def validCity(self, city):
-        if city.data == "--Select City--":
-            raise ValidationError("Please Select a City")
-
-    def ValidPincode(self, pincode):
-        if pincode.data == "--Select Pincode--":
-            raise ValidationError("Please Select a Pincode") 
 
 class CancelOrder(FlaskForm):
     cancelOrder = SubmitField('Cancel Order')

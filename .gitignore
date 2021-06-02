@@ -4,3 +4,4 @@ migrations
 **/__pycache__/*
 *.pyc
 *.mako
+himatech/__pycache__/routes.cpython-38.pyc
