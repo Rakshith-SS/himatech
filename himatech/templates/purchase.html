@@ -10,7 +10,7 @@
         {% if item|length > 1%}
             <div class="card w-50">
                 <div class="card-body">
-                    <h5 class="card-title">Invoice Date - {{ checkedOutTime[loop.index -1 ].strftime("%d %b %Y %H:%M") }}</h5>
+                    <h5 class="card-title">Invoice Date - /h5>
                     <h5 class="card-title">Expected Delivery Date - {{ DeliveryDate[loop.index -1].strftime("%d %b %Y %H:%M")}}</h5>
                     <hr>
                         {% for order in item %}

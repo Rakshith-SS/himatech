@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from phonenumbers import phonenumber 
 from himatech import db,login
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,9 +11,9 @@ def load_user(id):
 
 class Cart(db.Model):
     cart_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20))
+    username = db.Column(db.String(32))
     email = db.Column(db.String(120))
-    product_name = db.Column(db.String(32))
+    product_name = db.Column(db.String(100))
     product_quantity = db.Column(db.Integer)
     product_image = db.Column(db.String(100))
     product_price = db.Column(db.Integer)
@@ -35,7 +34,7 @@ class Cart(db.Model):
 
 class Items(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(32), unique=True)
+    product_name = db.Column(db.String(100))
     product_desc = db.Column(db.Text)
     product_price = db.Column(db.Integer)
     product_image = db.Column(db.String(100))
@@ -44,6 +43,16 @@ class Items(db.Model):
     def __repr__(self):
         return f'Items ({self.product_name} , {self.product_price}, {self.product_quantity_left})'
 
+class Wishlist(db.Model):
+    wishlist_id = db.Column(db.Integer, primary_key=True)
+    wishlist_item = db.Column(db.String(100))
+    wishlist_image = db.Column(db.String(100))
+    wishlist_item_price = db.Column(db.Integer)
+    username = db.Column(db.String(32))
+    email = db.Column(db.String(120))
+    
+    def __repr__(self):
+        return f'Wishlist ({self.username}, {self.wishlist_item})'
 
 class User(UserMixin ,db.Model):
     user_id = db.Column(db.Integer, primary_key=True)

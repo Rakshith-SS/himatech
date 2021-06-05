@@ -4,7 +4,7 @@ from flask_wtf.file import FileField, FileAllowed
 from phonenumbers import phonenumber
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, validators, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
-from himatech.models import User, Items
+from himatech.models import User, Items, Wishlist
 from flask_login import current_user
 import re
 import phonenumbers
@@ -17,16 +17,16 @@ phone = re.compile(numberPattern)
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6,max=32)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6,max=64)])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Log In')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username' , validators=[DataRequired(), Length(min=3,max=20)])
+    username = StringField('Username' , validators=[DataRequired(), Length(min=3,max=32)])
     email = StringField('Email', validators=[DataRequired(), Email()])    
     password = PasswordField('Password', 
                             [DataRequired(),
-                            Length(min=6,max=32),
+                            Length(min=6,max=64),
                             validators.EqualTo('confirm_password',
                             message='Passwords must match')])
     mobileNumber = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=13)])
@@ -105,6 +105,12 @@ class UpdateAccountInfo(FlaskForm):
 
     def validate_picture(self, picture):
         pass
+
+
+class AddToWishlist(FlaskForm):
+    submit = SubmitField('Add To Wishlist')
+    
+
 class AddToCart(FlaskForm):
     submit = SubmitField('Add To Cart')
 
@@ -117,7 +123,7 @@ class GoToCheckout(FlaskForm):
 class CheckOut(FlaskForm):
     firstName = StringField('First Name', validators=[DataRequired(), Length(min=3, max=32)])
     lastName = StringField('Last Name', validators=[DataRequired(), Length(min=1, max=32)])
-    address = StringField('ADDRESS', validators=[DataRequired(), Length(min=15, max=300)])
+    address = StringField('ADDRESS', validators=[DataRequired(), Length(min=10, max=300)])
     mobileNumber = StringField('Mobile Number', validators=[DataRequired(), Length(min=10, max=13)])
     company = StringField('Company/Organisation Detail(Optional)')
     pincode = SelectField('Pincode',choices=["560008", "560025", "560026"] , validate_choice=True)
@@ -138,3 +144,13 @@ class CheckOut(FlaskForm):
 
 class CancelOrder(FlaskForm):
     cancelOrder = SubmitField('Cancel Order')
+
+
+class WishlistAddToCart(FlaskForm):
+    submit = SubmitField('Add to Cart')
+
+class RemoveFromWishlist(FlaskForm):
+    submit = SubmitField('Remove')
+
+class ClearWishlist(FlaskForm):
+    submit = SubmitField('Clear Wishlist')

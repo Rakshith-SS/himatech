@@ -25,60 +25,57 @@
 
     <div class="for-loop">
       {% for item in shoppedItems %}
-          {% if item|length > 1%}
-    <div class="container">
-  <!-- Loop through Purchased items -->
+      {% if item|length > 1%}
+      <div class="container">
+        <!-- Loop through Purchased items -->
 
         <!-- Start of Purchase Orders -->
         {% for order in item %}
-          <div class="card flex-md-row mb-4 box-shadow ">
+        <div class="card flex-md-row mb-4 box-shadow ">
 
-            <!-- Image of the item -->
-            <img class="card-img-right flex-auto d-none d-md-block" alt="Thumbnail [200x250]" style="width: 210px; height: 200px;" src="{{url_for('static', filename='images/orders/p4.jpg')}}" data-holder-rendered="true">
-            <div class="card-body d-flex flex-column align-items-start" style="margin-left: 30px;">
+          <!-- Image of the item -->
+          <img class="card-img-right flex-auto d-none d-md-block" alt="Thumbnail [200x250]" style="width: 210px; height: 200px;" src="{{url_for('static', filename='images/product_images/' + order.product_image )}}" data-holder-rendered="true">
+          <div class="card-body d-flex flex-column align-items-start" style="margin-left: 30px;">
 
-              <h3 class="mb-0 text-dark" style="font-size: 25px;">
-                {{ order.product_name}}
-                <!-- Product Name -->
-              </h3>
+            <h3 class="mb-0 text-dark" style="font-size: 25px;">
+              {{ order.product_name}}
+              <!-- Product Name -->
+            </h3>
 
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Invoice Number</th>
-                    <th scope="col">Mode Of Payment</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td scope="row">{{ order.product_quantity }}</td>   <!-- Quantity -->
-                    <td>{{ order.invoiceNumber }}</td>         <!-- Invoice Number -->
-                    <td>COD</td>
-                  </tr>
-                </tbody>
-              </table>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Invoice Number</th>
+                  <th scope="col">Mode Of Payment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">{{ order.product_quantity }}</td> <!-- Quantity -->
+                  <td>{{ order.invoiceNumber }}</td> <!-- Invoice Number -->
+                  <td>COD</td>
+                </tr>
+              </tbody>
+            </table>
 
-              <!-- Price  -->
-              <div class="d-flex flex-row justify-content-between align-items-center order">
-                <div class="d-flex flex-column order-details">
-                    <h4 class="mt-3 mb-4 bold">
-                      <span class="mt-5">&#x20B9; {{ order.product_price }}</span> <!-- Total Price for a item -->
-                      <span class="small text-muted">
-                        (Incl.Gst)
-                      </span>
-                    </h4>
-                </div>
+            <!-- Price  -->
+            <div class="d-flex flex-row justify-content-between align-items-center order">
+              <div class="d-flex flex-column order-details">
+                <h4 class="mt-3 mb-4 bold">
+                  <span class="mt-5">&#x20B9; {{ order.product_price }}</span> <!-- Total Price for a item -->
+                  <span class="small text-muted">
+                    (Incl.Gst)
+                  </span>
+                </h4>
               </div>
-            <!-- End of Price -->
-
-
+            </div>
+                    <!-- End of Price -->
           </div> <!-- closing of card-body -->
-        </div>  <!-- closing of card- flex -->
-        {% endfor %}
+        </div> <!-- closing of card- flex -->
+        
       </div> <!-- closing of container -->
-
-      <!-- Payment Summary -->
+        {% endfor %}
       <div class="container-fluid">
 
         <div class="d-flex justify-content-between">
@@ -87,50 +84,146 @@
           </span>
           <div class="tracking-details">
             <form class="" action="index.html" method="post">
-              {{ form.cancelOrder(class="btn btn-danger")}}
+              {{ form.cancelOrder(class="btn btn-danger") }}
             </form>
           </div>
         </div>
-
+        
         <div class="mb-3">
           <hr class="new1">
         </div>
 
         <article class="card">
           <div class="card-body row">
-            <div class="col"> <strong>Order Placed On:</strong> <br>29 nov 2021 </div> <!-- Ordered Time -->
+            <div class="col"> <strong>Order Placed On:</strong> <br>{{ checkedOutTime[loop.index -1].strftime("%d %b %Y %H:%M") }} </div> <!-- Ordered Time -->
             <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986
             </div>
-            <div class="col"> <strong>Expected Delivery Date:</strong> <br>1 Dec 2021 </div> <!--Delivery Date -->
+            <div class="col"> <strong>Expected Delivery Date:</strong> <br>{{ DeliveryDate[loop.index -1].strftime("%d %b %Y") }} </div>
+            <!--Delivery Date --> 
           </div>
         </article>
 
         <!-- open a for loop again over here  -->
 
         <!-- summary of all your purchased items -->
+        {% for order in item %}
         <div class="d-flex justify-content-between mt-1" style="font-size: 14px;">
-          <span class="font-weight-bold">Hp Printer(Qty:1)</span> <!-- item Name and Quantity -->
-          <span class="text-muted">₹1500.00</span> <!-- total price for that item -->
+          <span class="font-weight-bold">{{order.product_name }}(Qty - {{ order.product_quantity }})</span> <!-- item Name and Quantity -->
+          <span class="text-muted">₹ {{ order.product_price }}</span> <!-- total price for that item -->
         </div>
-
+        {% endfor %}
         <div class="d-flex justify-content-between">
           <small>Shipping</small>
-          <small>₹75.00</small>
+          <small>Free</small>
         </div>
 
         <div class="d-flex justify-content-between mt-3" style="margin-bottom: 7px; font-size: 18px;">
           <span class="font-weight-bold">Total</span>
-          <span class="font-weight-bold theme-color">{{ TotalPrice[loop.index -1]}}</span> <!--total price of the item -->
+          <span class="font-weight-bold theme-color">{{ TotalPrice[loop.index -1]}}</span>
+          <!--total price of the item -->
         </div>
 
       </div>
       <hr>
-      {%endif%}
-  {% endfor %}
-    </div> <!-- close of staring div -->
+      {% else %}
+      <!-- for single item purchased -->
+      {% for order in item %}
+      <div class="card flex-md-row mb-4 box-shadow ">
+        <!-- Image of the item -->
+        <img class="card-img-right flex-auto d-none d-md-block" alt="Thumbnail [200x250]" style="width: 210px; height: 200px;" src="{{url_for('static', filename='images/product_images/' + order.product_image )}}" data-holder-rendered="true">
+        <div class="card-body d-flex flex-column align-items-start" style="margin-left: 30px;">
+          <h3 class="mb-0 text-dark" style="font-size: 25px;">
+            {{ order.product_name}}
+            <!-- Product Name -->
+          </h3>
 
-</body>
+          <!-- Table Summary -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Quantity</th>
+                <th scope="col">Invoice Number</th>
+                <th scope="col">Mode Of Payment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">{{ order.product_quantity }}</td> <!-- Quantity -->
+                <td>{{ order.invoiceNumber }}</td> <!-- Invoice Number -->
+                <td>COD</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Price  -->
+          <div class="d-flex flex-row justify-content-between align-items-center order">
+            <div class="d-flex flex-column order-details">
+              <h4 class="mt-3 mb-4 bold">
+                <span class="mt-5">&#x20B9; {{ order.product_price }}</span> <!-- Total Price for a item -->
+                <span class="small text-muted">
+                  (Incl.Gst)
+                </span>
+              </h4>
+            </div>
+          </div>
+          <!-- End of Price -->
 
 
+        </div> <!-- closing of card-body -->
+      </div> <!-- closing of card- flex -->
+    </div> <!-- closing of container -->
+    {% endfor %}
+        <div class="container-fluid">
 
-{% endblock %}
+      <div class="d-flex justify-content-between">
+        <span class="theme-color" style="font-size: 21px; font-weight: bolder;">
+          Payment Summary
+        </span>
+        <div class="tracking-details">
+          <form class="" action="index.html" method="post">
+            {{ form.cancelOrder(class="btn btn-danger")}}
+          </form>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <hr class="new1">
+      </div>
+
+      
+      <article class="card">
+        <div class="card-body row">
+          <div class="col"> <strong>Order Placed On:</strong> <br>{{ checkedOutTime[loop.index -1 ].strftime("%d %b %Y %H:%M") }}<</div> <!-- Ordered Time -->
+          <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986
+          </div>
+          <div class="col"> <strong>Expected Delivery Date:</strong> <br>{{ DeliveryDate[loop.index -1].strftime("%d %b %Y") }}</div>
+          <!--Delivery Date -->
+        </div>
+      </article>
+
+      <!-- summary of all your purchased items -->
+      {% for order in item %}
+      <div class="d-flex justify-content-between mt-1" style="font-size: 14px;">
+        <span class="font-weight-bold">{{order.product_name }}(Qty - {{ order.product_quantity }})</span> <!-- item Name and Quantity -->
+        <span class="text-muted">₹ {{ order.product_price }}</span> <!-- total price for that item -->
+      </div>
+      {% endfor %}
+      <div class="d-flex justify-content-between">
+        <small>Shipping</small>
+        <small>Free</small>
+      </div>
+      <div class="d-flex justify-content-between mt-3" style="margin-bottom: 7px; font-size: 18px;">
+        <span class="font-weight-bold">Total</span>
+        <span class="font-weight-bold theme-color">₹ {{ TotalPrice[loop.index -1] }} </span>
+        <!--total price of the item -->
+      </div>
+    </div>
+    <hr>
+    
+
+        {% endif %}
+    {% endfor %}
+  </div> <!-- close of staring div for-loop-->
+
+
+{% endblock body %}

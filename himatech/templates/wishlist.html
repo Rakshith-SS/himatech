@@ -1,0 +1,141 @@
+{% extends 'base.html'%} {% block head%}
+
+<meta charset="utf-8" />
+<title>Wishlist profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/wishlist.css ')}}"
+/>
+<link
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    rel="stylesheet"
+/>
+
+<style>
+    .removeItem {
+        background-color: #d94c4c;
+        color: rgb(26, 23, 23);
+    }
+</style>
+. {% endblock head %} {% block body%}
+
+<body>
+    <div
+        class="container-fluid"
+        style="margin-inline: auto; margin-bottom: 50px;"
+    >
+        <div
+            class="row"
+            style="margin-inline: auto; margin-top: 23px;width: 82%;"
+        >
+            <div
+                class="col-lg-8"
+                style="margin-inline: auto;margin-top: 23px; width: 82%;"
+            >
+                <!-- Wishlist Table-->
+                <div class="table-responsive wishlist-table margin-bottom-none">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="font-size: 29px;">Your Wishlist</th>
+                                <th class="text-center">
+                                    <form method="post" novalidate>
+                                        <button class="btn btn-sm btn-outline-danger"  href="#"style="font-size: 22px;">
+                                            Clear Wishlist
+                                        </button>
+                                        <input type="hidden" name="clearWishlist" value="0">
+                                    </form>
+                                </th>
+                            </tr>
+                        </thead>
+                        {# Start For Loop here #} {% for item in wishlist %}
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="product-item">
+                                        <div class="product-thumb" href="#">
+                                            <img
+                                                src="{{ url_for('static', filename='images/product_images/'+ item.wishlist_image )}}"
+                                                class="img-fluid"
+                                                alt="Product"
+                                            />
+                                        </div>
+
+                                        <div class="product-info">
+                                            <h4 class="product-title">
+                                                <a href=""
+                                                    >{{ item.wishlist_item }}</a
+                                                >
+                                                <!-- Product Name -->
+                                            </h4>
+                                            <div
+                                                class="text-lg text-medium text-muted"
+                                            >
+                                                &#8377;{{
+                                                item.wishlist_item_price }}
+                                                <!-- Price of the Product-->
+                                            </div>
+                                            <div>
+                                                Availability:
+                                                <div
+                                                    class="d-inline text-success"
+                                                    style="font-weight:bolder ;"
+                                                >
+                                                    In Stock
+                                                    <!-- Status of Availability -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="tracking-details">
+                                           <form method="post" novalidate>
+                                                {{ addToCart.hidden_tag() }}
+                                                {{ addToCart.submit(class="btn btn-success") }}
+                                                <input type="hidden" name="addToCart" value="{{ item.wishlist_item }}">
+                                                <input type="hidden" name="addToCartId" value="{{ item.wishlist_id }}">
+                                            </form>
+                                        </div>
+                                        
+
+                                        <form method="post" novalidate>
+                                            <button
+                                                class="btn"
+                                                style="background-color: #d94c4c; color: rgb(26, 23, 23); "
+                                            >
+                                                <i class="fa fa-close"></i>
+                                                Remove
+                                            </button>
+                                            <input type="hidden" name="removeItemId" value="{{item.wishlist_id}}">
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {# End for Loop here #} {% endfor%}
+                    </table>
+                </div>
+                <hr class="mb-4" />
+                <div class="custom-control custom-checkbox">
+                    <input
+                        class="custom-control-input"
+                        type="checkbox"
+                        id="inform_me"
+                        checked=""
+                    />
+                    <label class="custom-control-label" for="inform_me"
+                        >Inform me when item from my wishlist is
+                        available</label
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript"></script>
+    {% endblock %}
+</body>

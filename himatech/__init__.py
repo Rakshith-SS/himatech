@@ -12,7 +12,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dr3t04ti03949i20r344nbijrnu4984e94023fmerv#$.rf'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['MAX_CONTENT_LENGTH'] = 5*1024*1024 # 5Mb
+app.config['MAX_CONTENT_LENGTH'] = 5*1024 # 5Mb
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 

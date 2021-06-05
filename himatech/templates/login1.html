@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block head %}
+  <!-- <link rel="stylesheet" href="../static/css/login.css">  -->
+  <style>
+
+    .login-block{
+      border: 2px solid #000;
+      margin: 2rem 2rem 0 55rem;
+      padding: 3rem;
+    }
+
+    .alert{
+      width: 300px;
+    }
+
+    .login-items{
+      padding: 0.3rem;
+    }
+
+  </style>
+
+{% endblock head%}
+{%block body%}
+
+  <div class="login-block">
+    <h3>Log In</h3>
+    <hr>
+    <form action="" method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="login-items">
+        {{ form.email.label }} <br>
+        {{ form.email }}
+        {% for error in form.email.errors %}
+          <div class="alert alert-danger">
+            <p> Please enter a valid email </p>
+          </div>
+        {% endfor %}
+     </div>
+      <div class="login-items">
+        {{ form.password.label}} <br>
+        {{ form.password }}
+        {% for error in form.password.errors %}
+          <div class="alert alert-danger ">
+            <p>Password must be a minimum of 6 characters</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="login-items">
+        <p>{{ form.remember_me }} {{ form.remember_me.label }}</p>
+      </div>
+
+      <div class="login-items">
+      <p>{{ form.submit(class="btn btn-primary") }}</p>
+      </div>
+
+    </form>
+  </div>
+
+{%endblock body%}

@@ -1,145 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width initial-scale=1.0" />
 
-        <title>HimaTechnosoft</title>
-        <!-- favicon -->
+<head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Ubuntu&display=swap"
-            rel="stylesheet"
-        />
-        <!-- CSS -->
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-            integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-            crossorigin="anonymous"
-        />
-        <style>
-            * {
-                padding: 0%;
-                margin: 0%;
-                box-sizing: border-box;
-            }
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+      </script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+      </script>
 
-            /* ComputerCard */
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
-            #computercards {
-                padding: 50px;
-                padding-top: 10px;
-                background-color: rgb(234, 237, 237);
-            }
-        </style>
-        <!-- head block so that you can add styles, titles etc -->
-        {% block head %} {% endblock head %}
-        <!-- Bootstrap javascript -->
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-            crossorigin="anonymous"
-        ></script>
-    </head>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 
-    <body>
-        <!--NavBar-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-            <a class="navbar-brand" href="#">
-                <img
-                    src="{{url_for('static', filename='images/navbar/himatechnosoft_logo_onlineShoping.png')}}"
-                    class="h_logo"
-                    width="ml-auto"
-                    height="40"
-                    alt=""
-                />
-            </a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
+  {% block head%}{%endblock%}
+</head>
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <ul class="navbar-nav mr-auto mt-2 ">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ url_for('index') }}"
-                            >Home <span class="sr-only">(current)</span></a
-                        >
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('product') }}"
-                            >Product</a
-                        >
-                    </li>
-                    {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout')}}"
-                            >Logout</a
-                        >
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('account') }}"
-                            >Account</a
-                        >
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('cart') }}"
-                            >Cart</a
-                        >
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('orders') }}">Orders</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('signUpLogin')}}"
-                            >Log In</a
-                        >
-                    </li>
-                    {% endif %}
-                </ul>
-                <form class="form-inline my-2 my-lg-0 ml-auto">
-                    <input
-                        class="form-control mr-sm-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button
-                        class="btn btn-outline-dark my-2 my-sm-0"
-                        type="submit"
-                    >
-                        Search
-                    </button>
-                </form>
-            </div>
-        </nav>
-        <div class="row">
-            <div class="col-md-12">
-                {% with messages = get_flashed_messages(with_categories= true)
-                %} {% if messages %} {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-                {% endfor %} {%endif%} {% endwith %}
-            </div>
-        </div>
+<body>
+  <!--NavBar-->
+  <nav>
+    <div class="menu-icon">
+      <span class="fas fa-bars"></span>
+    </div>
+    <div class="logo">
+      HimaTechnosoft
+    </div>
+   
+   <div class="nav-items">
+   <!-- Navbar Items -->
+    <li>
+        <a href="{{ url_for('index') }}">Home</a>
+    </li>
+    <li>
+        <a href="{{ url_for('product') }}">Products</a>
+    </li>
+      {% if current_user.is_authenticated %}
+        <li>
+            <a href="{{ url_for('wishlist') }}">Wishlist</a>
+        </li>
+        
+        <li>
+            <a href="{{ url_for('cart') }}">Cart</a>
+        </li>
+        
+        <li>
+            <a href="{{ url_for('orders') }}">Orders</a>
+        </li>
+        
+        <li>
+            <a href="{{ url_for('account') }}">Account</a>
+        </li>
 
-        {% block body %} {% endblock body %}
-    </body>
+        <li>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </li>
+      {% else %}
+        <li>
+            <a href="{{ url_for('signUpLogin') }}">Log In</a>
+        </li>
+      {% endif %}
+    </div>
+    <div class="search-icon">
+
+      <span class="fas fa-search"></span>
+    </div>
+    <div class="cancel-icon">
+      <span class="fas fa-times"></span>
+    </div>
+    <form action="#">
+      <input type="search" class="search-data" placeholder="Search" required>
+      <button type="submit" class="fas fa-search"></button>
+    </form>
+  </nav>
+
+  <script>
+    const menuBtn = document.querySelector(".menu-icon span");
+    const searchBtn = document.querySelector(".search-icon");
+    const cancelBtn = document.querySelector(".cancel-icon");
+    const items = document.querySelector(".nav-items");
+    const form = document.querySelector("form");
+    menuBtn.onclick = () => {
+      items.classList.add("active");
+      menuBtn.classList.add("hide");
+      searchBtn.classList.add("hide");
+      cancelBtn.classList.add("show");
+    }
+    cancelBtn.onclick = () => {
+      items.classList.remove("active");
+      menuBtn.classList.remove("hide");
+      searchBtn.classList.remove("hide");
+      cancelBtn.classList.remove("show");
+      form.classList.remove("active");
+      cancelBtn.style.color = "#ff3d00";
+    }
+    searchBtn.onclick = () => {
+      form.classList.add("active");
+      searchBtn.classList.add("hide");
+      cancelBtn.classList.add("show");
+    }
+  </script>
+  <!--End of NavBar-->
+
+  {# flash messages #}
+  <div class="row">
+    <div class="col-md-12">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>    
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+  </div>
+
+
+  {% block body %} {% endblock body %}
+
+
+</body>
+
 </html>
