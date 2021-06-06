@@ -274,8 +274,7 @@ def orders():
 
     itemCount = len(DeliveryDate)
     if request.method=='POST':
-        flash("Under Construction", "danger")
-    
+        flash(f"{request.form.get('cancelPurchase')}", 'info') 
     if len(orders) == 0:
         return render_template('emptyorder.html')
     return render_template('myorders.html', shoppedItems= shoppedItems, form=form, DeliveryDate = DeliveryDate, TotalPrice=TotalPrice, itemCount = itemCount, checkedOutTime=checkedOutTime)

@@ -83,8 +83,9 @@
             Payment Summary
           </span>
           <div class="tracking-details">
-            <form class="" action="index.html" method="post">
+            <form method="post" novalidate>
               {{ form.cancelOrder(class="btn btn-danger") }}
+              <input type="hidden" name="cancelPurchase" value="{{checkedOutTime[loop.index -1] }}">
             </form>
           </div>
         </div>
@@ -125,9 +126,14 @@
 
       </div>
       <hr>
-      {% else %}
-      <!-- for single item purchased -->
-      {% for order in item %}
+    {% else %}
+    <!-- for single item purchased -->
+    <div class="container">
+        <!-- Loop through Purchased items -->
+
+        <!-- Start of Purchase Orders -->
+
+     {% for order in item %}
       <div class="card flex-md-row mb-4 box-shadow ">
         <!-- Image of the item -->
         <img class="card-img-right flex-auto d-none d-md-block" alt="Thumbnail [200x250]" style="width: 210px; height: 200px;" src="{{url_for('static', filename='images/product_images/' + order.product_image )}}" data-holder-rendered="true">
@@ -180,8 +186,9 @@
           Payment Summary
         </span>
         <div class="tracking-details">
-          <form class="" action="index.html" method="post">
+          <form method="post">
             {{ form.cancelOrder(class="btn btn-danger")}}
+            <input type="hidden" name="cancelPurchase" value="{{ checkedOutTime[loop.index -1] }}" >
           </form>
         </div>
       </div>
@@ -220,8 +227,8 @@
     </div>
     <hr>
     
-
-        {% endif %}
+ 
+    {% endif %}
     {% endfor %}
   </div> <!-- close of staring div for-loop-->
 
