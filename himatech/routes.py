@@ -3,13 +3,12 @@ import secrets
 from flask import render_template, url_for, flash, request, redirect, session
 from flask.signals import got_request_exception
 from sqlalchemy.orm import query
-from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout, CancelOrder, WishlistAddToCart, RemoveFromWishlist, ClearWishlist, AddToWishlist
+from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout, CancelOrder, WishlistAddToCart, RemoveFromWishlist, ClearWishlist, AddToWishlist, ChangeProfilePicture
 from datetime import datetime, timedelta
 from himatech import app, db, UPLOAD_FOLDER
 from flask_login import current_user, login_user, login_required, logout_user
 from himatech.models import User, Items, Cart, Wishlist
 from werkzeug.utils import secure_filename
-
 
 @app.route('/')
 @app.route('/home')
@@ -59,41 +58,53 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# generates a random name for a picture upload and saves it to "profile_pictures" directory
-def saveProfilePic(picture):
-    randomName = secrets.token_hex(16)
+
+allowed_extensions = ['.jpeg', '.jpg', '.png']
+max_image_size = 2*1024*1024 #2MB
+# validates an image, generates a random name for the uploaded image and saves it to "profile_pictures" directory
+def saveProfilePic(picture): 
     fileName, fileExtension = os.path.splitext(picture.filename)
-    pictureName = randomName + fileExtension
-    picture.save(os.getcwd() + "/himatech/static/images/profile_pictures/" + pictureName)
-    return pictureName
+    if fileExtension in allowed_extensions:
+        picture_size = picture.read()
+        if len(picture_size) < max_image_size:
+            randomName = secrets.token_hex(16)
+            pictureName = randomName + fileExtension
+            filename = secure_filename(picture.filename)
+            picture.save(os.getcwd() + "/himatech/static/images/profile_pictures/" + filename)
+            return 
+        else:
+            flash('Image size should be less than 2MB', 'danger')
+    else:
+        flash('Only .png, .jpeg, .jpg extensions are allowed', 'danger')
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountInfo()
+    changePhoto = ChangeProfilePicture() 
     avatar = url_for('static', filename='/images/profile_pictures/'+current_user.avatar)
+
+    if request.method=='POST' and request.form.get('picture'):
+        pass
+        #picture = saveProfilePic(request.files['changePhoto']) 
+        # picture = saveProfilePic(changePhoto.picture.data)
+        # current_user.avatar = picture
+        # db.session.commit()
+
     if form.validate_on_submit():
-        if form.picture.data:
-            picture = saveProfilePic(form.picture.data)
-            current_user.avatar = picture
         cartName = Cart.query.filter_by(username=current_user.username, email=current_user.email).first()
         cartName.username = form.username.data
         cartName.email = form.email.data
-
-
         wishlistName = Wishlist.query.filter_by(username=current_user.username, email=current_user.email).first()
         wishlistName.username = form.username.data
         wishlistName.email = form.email.data
         db.session.commit()
-
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
-
         flash(f'Account is updated successfully!', 'success')
         return redirect(url_for('index'))
-    return render_template('account.html', form=form, avatar=avatar)
-
+    return render_template('editprofile.html', form=form, changePhoto=changePhoto, avatar=avatar)
 
 @app.route('/products', methods=['GET', 'POST'])
 def product():
@@ -192,8 +203,6 @@ def cart():
 
     if checkOut.validate_on_submit():
         return redirect(url_for('checkout'))
-    
-
     cartPrice = 0
     for cartItem in cartItems:
         cartPrice += cartItem.product_price
@@ -244,8 +253,7 @@ def checkout():
 @login_required
 def orders():
     form = CancelOrder()
-    orders = Cart.query.filter_by(email=current_user.email, checkout=True).all()
-    
+    orders = Cart.query.filter_by(email=current_user.email, checkout=True).all()   
     checkedOutTime = []
     shoppedItems = []
     orderedPrice = 0

@@ -57,38 +57,49 @@ class RegistrationForm(FlaskForm):
             raise ValidationError(f'{email.data} is an invalid email')
         
     def validate_mobileNumber(self,mobileNumber):
-
-        numberExist = User.query.filter_by(phonenumber= mobileNumber.data).first()
-
-        if numberExist is not None:
-            raise ValidationError(f'{mobileNumber.data} is already taken')
-        if phone.match(mobileNumber.data):
-            mobile = phonenumbers.parse(mobileNumber.data, "IN")
-            checkNumber = phonenumbers.is_valid_number(mobile)
+        numberExist = User.query.filter_by(phonenumber= mobileNumber.data).first() 
+        if numberExist is not None: 
+            raise ValidationError(f'{mobileNumber.data} is already taken') 
+        if phone.match(mobileNumber.data): 
+            mobile = phonenumbers.parse(mobileNumber.data, "IN") 
+            checkNumber = phonenumbers.is_valid_number(mobile) 
             if checkNumber:
-                pass  #valid mobile Number
-            else:
-                raise ValidationError("Enter a valid phone Number")
-        else:
+                pass  #valid mobile Number 
+            else: 
+                raise ValidationError("Enter a valid phone Number") 
+        else: 
             raise ValidationError("Phone Numbers must start 0, +91 or the 10 digit number itself")
+
+
+class ChangeProfilePicture(FlaskForm):
+    picture = FileField('Change Photo', validators=[FileAllowed(['jpg','png', 'jpeg'])])
+
+    def validate_picture(self, picture):
+        pass
+    
 
 class UpdateAccountInfo(FlaskForm):   
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=32)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg','png', 'jpeg'])])
-    submit = SubmitField('Update Account')
+    current_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=6,max=64)])
+    new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=6, max=64)])
+    confirm_password = PasswordField('Confirm Password', validators=[
+                                    DataRequired(), 
+                                    Length(min=6, max=64), 
+                                    validators.EqualTo('new_password',
+                                    message='Passwords must match'
+                                    )])
+    submit = SubmitField('Save Changes')
 
     def validate_username(self,username):
         if current_user.username != username.data:
             user = User.query.filter_by(username=username.data).first()
             if user is not None:
-                raise ValidationError(f'{username.data} is already taken')
-        
+                raise ValidationError(f'{username.data} is already taken')        
         if re.search(namePattern, username.data):
             pass
         else:
             raise ValidationError(f'{username.data} is not valid username')
-
         if re.search('^\d', username.data):
             raise ValidationError(f'Username cannot begin with a number')
 
@@ -103,8 +114,12 @@ class UpdateAccountInfo(FlaskForm):
         else:
             raise ValidationError(f'{email.data} is an invalid email')
 
-    def validate_picture(self, picture):
-        pass
+    def validate_current_password(self, current_password):
+        user = User.query.filter_by(username=current_user.username).first()
+        if user.check_password(current_password.data):
+            pass
+        else:
+            raise ValidationError("Incorrect password, try again!")
 
 
 class AddToWishlist(FlaskForm):

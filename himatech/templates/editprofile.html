@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block head%}
+<title>EditProfile</title>
+<style>
+    .profile{
+        padding: 2% 6% ;
+    }
+</style>
+{% endblock head %}
+
+{% block body%}
+
+<body>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div class="profile">
+        <div class="col">
+            <div class="row">
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="e-profile">
+                                <div class="row">
+                                    <div class="col-12 col-sm-auto mb-3">
+                                        <div class="mx-auto" style="width: 140px;">
+                                            <img src="{{ avatar }}" class="d-flex justify-content-center align-items-center rounded"
+                                                style="height: 140px;">
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                        <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                            <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{ current_user.username }}</h4>
+                                            <p class="mb-0">{{ current_user.email }}</p>
+                                            <div class="text-muted"><small></small></div>
+                                            <div class="mt-2">
+                                                <form action="" enctype="multipart/form-data" method="post">
+                                                    <input type="file" name="changePhoto" class="form-control-file" required >
+                                                    <input type="hidden" name="picture" value="2" >
+                                                    <button class="btn btn-primary mt-2">
+                                                        <i class="fa fa-fw fa-camera"></i>
+                                                        <span> Change Photo </span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="text-center text-sm-right">
+                                            <button class="btn btn-block btn-secondary">
+                                                <i class="fa fa-sign-out"></i>
+                                                <span>Go Back</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                </ul>
+                                <div class="tab-content pt-3">
+                                    <div class="tab-pane active">
+                                        <form class="form" method="post" novalidate>
+                                            {{ form.hidden_tag()  }}
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                {{ form.username.label }}
+                                                                {{ form.username(class="form-control", placeholder= current_user.username) }}
+                                                                {% for error in form.username.errors %}
+                                                                    <p style="color:#ec4646;">{{ error }}</p>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                {{ form.email.label }}
+                                                                {{ form.email(class="form-control", placeholder=current_user.email )}}
+                                                                {% for error in form.email.errors %}
+                                                                    <p style="color:#ec4646;">{{ error }}</p>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-6 mb-3">
+                                                            <div class="mb-2"><b>Change Password</b></div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{ form.current_password.label }}
+                                                                        {{ form.current_password(class="form-control", placeholder="••••••") }}
+                                                                        {% for error in form.current_password.errors %}
+                                                                            <p style="color:#ec4646;">{{ error }}</p>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{ form.new_password.label }}
+                                                                        {{ form.new_password(class="form-control", placeholder="••••••") }}
+                                                                        {% for error in form.new_password.errors %}
+                                                                            <p style="color:#ec4646;">{{ error }}</p>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                       <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                                                                       {{ form.confirm_password(class="form-control", placeholder="••••••") }}
+                                                                       {% for error in form.confirm_password.errors %}
+                                                                            <p style="color:#ec4646;">{{ error }}</p>
+                                                                       {% endfor %}
+                                                                       </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                                                            <div class="mb-2"><b>Keeping in Touch</b></div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <label>Email Notifications</label>
+                                                                    <div class="custom-controls-stacked px-2">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                class="custom-control-input"
+                                                                                id="notifications-blog" checked="">
+                                                                            <label class="custom-control-label"
+                                                                                for="notifications-blog">Blog
+                                                                                posts</label>
+                                                                        </div>
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                class="custom-control-input"
+                                                                                id="notifications-news" checked="">
+                                                                            <label class="custom-control-label"
+                                                                                for="notifications-news">Newsletter</label>
+                                                                        </div>
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox"
+                                                                                class="custom-control-input"
+                                                                                id="notifications-offers" checked="">
+                                                                            <label class="custom-control-label"
+                                                                                for="notifications-offers">Personal
+                                                                                Offers</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col d-flex justify-content-end">
+                                                            {{ form.submit(class="btn btn-primary") }}
+                                                        </div>
+                                                    </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+    </div>
+
+</body>
+
+{% endblock%}
