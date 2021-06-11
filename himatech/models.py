@@ -61,6 +61,10 @@ class User(UserMixin ,db.Model):
     avatar = db.Column(db.String(128), nullable=False, default="default.jpg")
     phonenumber = db.Column(db.String(13))
     password_hash = db.Column(db.String(128))
+    email_confirmed = db.Column(db.Boolean, default=False)
+    verification_email_sent_on = db.Column(db.DateTime)
+    email_confirmed_on = db.Column(db.DateTime)
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
