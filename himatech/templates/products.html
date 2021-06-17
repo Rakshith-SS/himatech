@@ -16,19 +16,18 @@
         <div class="row">
         {% for item in items %}
             <div class="col">
-                    <img src="{{url_for('static', filename='images/product_images/'+ item.product_image)}}" alt="">
+                    <img src="{{url_for('static', filename='images/product_images/'+ item.product_images['image1']) }}" alt="">
                     <p>{{ item.product_name }}</p>
                     <p>Price &#8377; {{ item.product_price }}</p>
                     <p>Quantity left: {{ item.product_quantity_left }}</p>
                     <form method="POST" novalidate>
-                        {{ form.hidden_tag() }}
                         <input type="hidden" name="getId" value={{ item.product_id }}>
-                        <p>{{ form.submit(class="btn btn-primary") }}</p>
+                        <button class="btn btn-success">Add To Cart</button>
                     </form>
 
                     <form method="post" novalidate>
                         <input type="hidden" name="product_id" value= {{ item.product_id}}>
-                        <p>{{ addToWishlist.submit(class="btn btn-info") }}</p>
+                        <button class="btn btn-info">Add To Wishlist</button>
                     </form>
             </div>
         {% endfor %}

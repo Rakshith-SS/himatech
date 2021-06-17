@@ -34,14 +34,23 @@ class Cart(db.Model):
 
 class Items(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String(50))
     product_name = db.Column(db.String(100))
     product_desc = db.Column(db.Text)
     product_price = db.Column(db.Integer)
-    product_image = db.Column(db.String(100))
+    product_images = db.Column(db.JSON)
     product_quantity_left = db.Column(db.Integer)
-
+    product_sold_totally = db.Column(db.Integer)
+    category = db.Column(db.String(100))
+    year_of_manufacture = db.Column(db.Integer)
+    warranty = db.Column(db.Integer)
+    model_number = db.Column(db.String(100))
+    discount_percent = db.Column(db.Integer)
+    discount_price = db.Column(db.Integer)
+    specifications = db.Column(db.JSON)
+    
     def __repr__(self):
-        return f'Items ({self.product_name} , {self.product_price}, {self.product_quantity_left})'
+        return f'Items <Product Name -{self.product_name} , Product Price - {self.product_price}, Category - {self.category}>'
 
 class Wishlist(db.Model):
     wishlist_id = db.Column(db.Integer, primary_key=True)

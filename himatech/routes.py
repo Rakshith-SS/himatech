@@ -3,7 +3,7 @@ import secrets
 from flask import render_template, url_for, flash, request, redirect, session
 from flask.signals import got_request_exception
 from sqlalchemy.orm import query
-from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, AddToCart, RemoveCartItem, GoToCheckout, CancelOrder, WishlistAddToCart, RemoveFromWishlist, ClearWishlist, AddToWishlist, ChangeProfilePicture
+from himatech.forms import CheckOut, LoginForm, RegistrationForm, UpdateAccountInfo, RemoveCartItem, GoToCheckout, CancelOrder, WishlistAddToCart, RemoveFromWishlist, ClearWishlist, ChangeProfilePicture
 from datetime import datetime, timedelta
 from himatech import app, db, UPLOAD_FOLDER
 from flask_login import current_user, login_user, login_required, logout_user
@@ -14,13 +14,12 @@ from markupsafe import escape
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template('index.html')
-
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
+    item_category = []
+    items = Items.query.all()
+    for item in items:
+        item_category.append(item)
+    category = set(item_category)
+    return render_template('index.html', category=category)
 
 @app.route('/signUpLogin', methods=['POST', 'GET'])
 def signUpLogin():
@@ -88,13 +87,18 @@ def account():
         # current_user.avatar = picture
         # db.session.commit()
     if form.validate_on_submit():
-        cartName = Cart.query.filter_by(username=current_user.username, email=current_user.email).first()
-        cartName.username = form.username.data
-        cartName.email = form.email.data
-        wishlistName = Wishlist.query.filter_by(username=current_user.username, email=current_user.email).first()
-        wishlistName.username = form.username.data
-        wishlistName.email = form.email.data
-        db.session.commit()
+        cartName = Cart.query.filter_by(username=current_user.username, email=current_user.email).all()
+        wishlistName = Wishlist.query.filter_by(username=current_user.username, email=current_user.email).all()
+        if cartName  is not None:
+            for name in cartName:
+                name.username = form.username.data
+                name.email = form.email.data
+                db.session.commit()
+        if wishlistName is not None:
+            for name in wishlistName:
+                name.username = form.username.data
+                name.email = form.email.data
+                db.session.commit()
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -102,24 +106,125 @@ def account():
         return redirect(url_for('index'))
     return render_template('editprofile.html', form=form, changePhoto=changePhoto, avatar=avatar)
 
-@app.route('/products', methods=['GET', 'POST'])
-def product():
-    form = AddToCart()
-    addToWishlist = AddToWishlist()
-    items = Items.query.all()
-    # Adding to Wishlist
-    if request.method == "POST" and request.form.get('product_id'): 
+@app.route('/<category>', methods=['GET', 'POST'])
+def product_category(category):
+    items = Items.query.filter_by(category=escape(category)).all()
+    if len(items) == 0:
+        return render_template('404.html')
+    else:
+        itemStock = []
+        #stock of an item 
+        for item in items:
+            itemName = Items.query.filter_by(product_name=item.product_name).first()
+            if itemName.product_quantity_left > 0:
+                itemStock.append("In Stock")
+            else:
+                itemStock.append("Not Available")
+        # Adding to Wishlist
+        if request.method == "POST" and request.form.get('product_id'): 
+            if current_user.is_authenticated is False:
+                flash('Log in, to add items to your Wishlist', 'warning')
+                return redirect(url_for('signUpLogin'))
+            productId = request.form.get('product_id')
+            product = Items.query.get(productId)
+            if product is None:
+                return "Nice Please Tell Me, How you did this"
+            #check if the item is  already present on the wishlist 
+            productName = product.product_name
+            productImage = product.product_images['image1']
+            productPrice = product.product_price
+            isItemOnWishlist = Wishlist.query.filter_by(username=current_user.username, wishlist_item=productName).first()
+            if isItemOnWishlist:
+                flash('Item has Already Been added to Your Wishlist', 'info')
+            else:
+                # Add item to Wishlist
+                wishlist = Wishlist(username=current_user.username, email=current_user.email, wishlist_item=productName, wishlist_image=productImage, wishlist_item_price= productPrice)
+                db.session.add(wishlist)
+                db.session.commit()
+                flash(f'{productName} is successfully added to your wishlist','success')
+                return redirect(url_for('index'))
+        # Adding to Cart
+        if request.method=='POST' and request.form.get('getId'):
+            if current_user.is_authenticated is False:
+                flash('Log in, to add items to your cart', 'warning')
+                return redirect(url_for('signUpLogin'))
+            itemId = request.form.get('getId')
+            cartItem = Items.query.get(itemId)
+            if cartItem is None:
+                return "Nice Tell Me How you, Got here"
+            if cartItem.product_quantity_left <= 0:
+                flash(f"{cartItem.product_name} is out of stock", "danger")
+                return redirect(url_for('index'))
+            else:
+                cartItem.product_quantity_left -= 1
+                cartItem.product_sold_totally += 1
+                cart = Cart(username=current_user.username,
+                            email=current_user.email,
+                            product_name=cartItem.product_name,
+                            product_quantity=1,
+                            product_image=cartItem.product_images['image1'],
+                            product_price=cartItem.product_price,
+                            checkout = False
+                            )
+                itemExist = Cart.query.filter_by(username=current_user.username, 
+                                                product_name=cartItem.product_name, 
+                                                checkout=False).first()
+                # if an item already exists in Cart
+                if itemExist is not None:
+                    cart = Cart.query.get(itemExist.cart_id)
+                    cart.product_quantity += 1
+                    cart.product_price += cartItem.product_price
+                    db.session.commit()
+                db.session.add(cart)
+                db.session.commit()
+                flash(f"Successfully added {cartItem.product_name} to your Cart ", "success")
+        return render_template('product.html', items=items, itemStock=itemStock)
+
+@app.route('/productinfo/<productName>', methods=['GET', 'POST'])
+def productinfo(productName):
+    item = Items.query.filter_by(product_name=escape(productName)).first_or_404()
+    if item.product_quantity_left > 0:
+        itemStock="In Stock"
+    else:
+        itemStock="Not Available"
+    # adding items to Cart
+    if request.method=='POST' and request.form.get('addToCart'):
+        item = Items.query.get(request.form.get('addToCart'))
         if current_user.is_authenticated is False:
-            flash('Log in, To add items to your Wishlist', 'warning')
+            flash(f'Login, to add {item.product_name} to your cart', 'warning')
             return redirect(url_for('signUpLogin'))
-        productId = request.form.get('product_id')
-        product = Items.query.get(productId)
-        if product is None:
-            return "Nice Please Tell Me, How you did this"
+        item.product_quantity_left -= 1
+        item.product_sold_totally += 1
+        cart = Cart(username=current_user.username,
+                    email=current_user.email,
+                    product_name=item.product_name,
+                    product_quantity=1,
+                    product_image=item.product_images['image1'],
+                    product_price=item.product_price,
+                    checkout = False
+                    )
+        itemExist = Cart.query.filter_by(username=current_user.username, 
+                                        product_name=item.product_name, 
+                                        checkout=False).first()
+        # if an item already exists in Cart
+        if itemExist is not None:
+            cart = Cart.query.get(itemExist.cart_id)
+            cart.product_quantity += 1
+            cart.product_price += item.product_price
+            db.session.commit()
+        db.session.add(cart)
+        db.session.commit()
+        flash(f"Successfully added {item.product_name} to your Cart ", "success")
+    #Adding items to your wishlist
+    if request.method=='POST' and request.form.get('addToWishlist'):
+        item = Items.query.get(request.form.get('addToWishlist'))
+        if current_user.is_authenticated is False:
+            flash(f'Log in, to add {item.product_name} to your Wishlist', 'warning')
+            return redirect(url_for('signUpLogin'))
         #check if the item is  already present on the wishlist 
-        productName = product.product_name
-        productImage = product.product_image
-        productPrice = product.product_price
+        productName = item.product_name
+        productImage = item.product_images['image1']
+        productPrice = item.product_price
         isItemOnWishlist = Wishlist.query.filter_by(username=current_user.username, wishlist_item=productName).first()
         if isItemOnWishlist:
             flash('Item has Already Been added to Your Wishlist', 'info')
@@ -129,60 +234,21 @@ def product():
             db.session.add(wishlist)
             db.session.commit()
             flash(f'{productName} is successfully added to your wishlist','success')
-            return redirect(url_for('product'))
-    # Adding to Cart
-    if form.validate_on_submit() and request.form.get('getId'):
-        if current_user.is_authenticated is False:
-            flash('Log in, To add items to Cart', 'warning')
-            return redirect(url_for('signUpLogin'))
-        itemId = request.form.get('getId')
-        cartItem = Items.query.get(itemId)
-        if cartItem is None:
-            return "Nice Tell Me How you, Got here"
-        if cartItem.product_quantity_left <= 0:
-            flash(f"{cartItem.product_name} is out of stock", "danger")
-            return redirect(url_for('product'))
-        else:
-            cartItem.product_quantity_left = cartItem.product_quantity_left - 1
-            cart = Cart(username=current_user.username,
-                        email=current_user.email,
-                        product_name=cartItem.product_name,
-                        product_quantity=1,
-                        product_image=cartItem.product_image,
-                        product_price=cartItem.product_price,
-                        checkout = False
-                        )
-            itemExist = Cart.query.filter_by(
-                username=current_user.username, product_name=cartItem.product_name, checkout=False).first()
-            if itemExist is not None:
-                cart = Cart.query.get(itemExist.cart_id)
-                cart.product_quantity += 1
-                cart.product_price += cartItem.product_price
-                db.session.commit()
-            db.session.add(cart)
-            db.session.commit()
-            flash(f"Successfully added {cartItem.product_name} to your Cart ", "success")
-    return render_template('products.html', items=items, form=form, addToWishlist=addToWishlist)
+            return redirect(url_for('index'))
 
-@app.route('/productinfo/<productName>')
-def productinfo(productName):
-    item = Items.query.filter_by(product_name=escape(productName)).first_or_404()
-    return render_template('productdetail.html', item=item)
+    return render_template('productdetail.html', item=item, itemStock=itemStock)
 
 @app.route('/cart', methods=['POST', 'GET'])
 @login_required
 def cart():
     form = RemoveCartItem()
     checkOut = GoToCheckout()
-    cartItems = Cart.query.filter_by(username=current_user.username, checkout=False).all()
-    
+    cartItems = Cart.query.filter_by(username=current_user.username, checkout=False).all() 
     # Removing an item quantity from your Cart
     if request.method == 'POST' and request.form.get('itemMinus'):
-        cartItem = Cart.query.get(request.form.get('itemMinus'))
-        
+        cartItem = Cart.query.get(request.form.get('itemMinus'))        
         if cartItem is None:
             return "Nice Tell me, how you got here"
-        
         if cartItem.product_quantity == 1:
             db.session.delete(cartItem)
             product = Items.query.filter_by(product_name=cartItem.product_name).first()
@@ -190,7 +256,6 @@ def cart():
             db.session.commit()
             flash(f"{cartItem.product_name} was successfully removed from your Cart", "info")
             return redirect(url_for('cart'))
-        
         itemPrice = cartItem.product_price/cartItem.product_quantity
         cartItem = Cart.query.get(request.form.get('itemMinus'))
         cartItem.product_quantity -= 1
@@ -200,14 +265,12 @@ def cart():
         product.product_quantity_left += 1
         db.session.commit()
         return redirect(url_for('cart'))
-
     # Increasing an item quantity from your cart
     if request.method=='POST' and request.form.get('itemPlus'):
         cartItem = Cart.query.get(request.form.get('itemPlus'))
         itemName = Items.query.filter_by(product_name=cartItem.product_name).first() 
         if cartItem is None:
             return "Nice Tell me, how you got here"
-        
         if itemName.product_quantity_left <= 0:
             flash(f"{cartItem.product_name} is no longer available in stock", "info")
             return redirect(url_for('cart'))
@@ -221,7 +284,6 @@ def cart():
             product.product_quantity_left -= 1
             db.session.commit()
             return redirect(url_for('cart'))
-
     # deleting an item from your cart
     if request.method=='POST' and request.form.get('cartId'):
         cartId = request.form.get('cartId')
@@ -265,7 +327,7 @@ def checkout():
     for cartItem in cart:
         cartPrice += cartItem.product_price
     if cartPrice == 0:
-        return render_template('cart.html', cartPrice=cartPrice)
+        return render_template('emptycart.html')
     if form.validate_on_submit():
         for item in cart:
             item.firstName = form.firstName.data
@@ -318,7 +380,7 @@ def orders():
                 TotalPrice.append(item.product_price)
     itemCount = len(DeliveryDate)
     if request.method=='POST':
-        flash(f"{request.form.get('cancelPurchase')}", 'info') 
+        flash(f"Under Construction", 'info') 
     if len(orders) == 0:
         return render_template('emptyorder.html')
     return render_template('myorders.html', shoppedItems= shoppedItems, form=form, DeliveryDate = DeliveryDate, TotalPrice=TotalPrice, itemCount = itemCount, checkedOutTime=checkedOutTime)
@@ -337,7 +399,7 @@ def wishlist():
         if itemName.product_quantity_left > 0:
             itemStock.append("In Stock")
         else:
-            itemStock.append("Out Of Stock")
+            itemStock.append("Not Available")
     # add an Item from wishlist to a user's cart
     if request.method=='POST'  and request.form.get('addToCart'):
         item = Items.query.filter_by(product_name= request.form.get('addToCart')).first()
@@ -376,7 +438,7 @@ def wishlist():
         wishlistItem = Wishlist.query.get(request.form.get('removeItemId'))
         db.session.delete(wishlistItem)
         db.session.commit()
-        flash(f'{wishlistItem.wishlist_item} was removed from your cart successfully! ','info')
+        flash(f'{wishlistItem.wishlist_item} was removed from your wishlist successfully! ','info')
         return redirect(url_for('wishlist'))
 
     # clear a user's wishlist
@@ -390,7 +452,7 @@ def wishlist():
     if len(wishlist) == 0:
         return render_template('emptywishlist.html') 
     
-    return render_template('wishlist.html', wishlist=wishlist, addToCart=addToCart, itemStock=itemStock )
+    return render_template('wishlist.html', wishlist=wishlist, itemStock=itemStock, addToCart=addToCart )
 
 # Error Pages
 
@@ -405,4 +467,3 @@ def ForbiddenError(e):
 @app.errorhandler(404)
 def PageNotFound(e):
     return render_template('404.html')
-

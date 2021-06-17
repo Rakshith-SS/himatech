@@ -4,14 +4,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
 {% endblock head %} {% block body %}
 <div class="container" style="max-width: 960px; margin-bottom: 30px">
-  {% if cartPrice == 0 %}
-  <div class="row">
-    <div class="col col-lg-12">
-      <p> Your Cart is Empty, Add Items to your cart </p>
-      <a href=" {{ url_for('product')}} ">Products</a>
-    </div>
-  </div>
-  {% else %}
   <div class="py-5 text-center">
     <h2>Checkout form</h2>
     <p class="lead">
@@ -175,6 +167,6 @@
     </div>
     <!-- End of Shipping Details -->
   </div>
-  {% endif %}
+
 </div>
 {% endblock body %}

@@ -1,134 +1,80 @@
 {% extends 'base.html'%}
 
 {% block head%}
-<style>
-  body{
-    background-color: rgb(234,237,237);
-}
-
-.product {
-    padding: 20px ;
-}
-
-.row-adjustment{
-    margin: 0%;
-}
-
-
-
-
-
-</style>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+    
+    <style>
+        button{
+            background: inherit;
+            border: 0px;
+        }
+    </style>
 {% endblock %}
 
 {% block body%}
-
-<section class="product">
-
+  <div class="container-fluid card-rak">
     
-         
-    <div class="row row-adjustment">
+    <div class="container-fluid   card-rak-inside" style="background-color: rgb(255, 255, 255);width: 100%;padding: 2%;">
+      <h1 style="text-align: left;">{{ items[0].category }}</h1>
       
-      <div class="col-lg-3 col-md-6 cardprop">
-        <div class="card" style="width:18rem;">
-          <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Dell Model Number</h5>
-            <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-            <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-          </div>
-        </div>
-      </div>
-    
-
-      <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
-    
-
-     <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-lg-3 col-md-6">
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Dell Model Number</h5>
-              <a href="#" class="btn btn-large btn-block btn-outline-danger">View</a>
-              <a href="#" class="btn btn-large btn-block btn-outline-success">Add To Cart</a>
-            </div>
-          </div>
-      </div>
+      <hr>
+      
+        <div class="row mt-2 g-4">
+            {% for item in items %}
+              <div class="col-lg-3 col-md-6 ">
+                <div class="not-Hover" >
+                  <div class="product">
+      
+                    <div class="imgbox">
+                      <div class="d-flex justify-content-between align-items-center p-2 first">
+                        <form method="post">
+                            <input type="hidden" name="product_id" value="{{ item.product_id}}">
+                            <span class="wishlist" title="Add to wishlist">
+                               <button>
+                                    <i class="fa fa-heart"></i>
+                                </button>
+                            </span>
+                        </form>
+                      </div>
+                      <img src="{{ url_for('static', filename='images/product_images/'+ item.product_images['image1']) }}">
+                      <div class="specifies">
+                        <h2 style="color: black;"><a href="{{ url_for('productinfo', productName= item.category ) }}">{{ item.product_name }}</a><br>
+                            {% if itemStock[loop.index -1] == "In Stock"%}
+                                <span style="color: #5cb85c; font-weight: bold;">
+                                    {{ itemStock[loop.index -1]}}
+                                </span>
+                            {% else %}
+                                <span style="color: #d9534f; font-weight: bold;">
+                                    {{ itemStock[loop.index -1] }}
+                                </span>
+                            {% endif %}
+                        </h2>
+                        <div class="price">₹ {{ item.product_price }}</div><label>Quick glance at Specs</label>
+                         
+                        {% for key, value in item.specifications.items() %}
+                            <ul class="unorederd-list">
+                               <li>{{ key }} - {{ value }} </li>
+                            </ul> 
+                        {% endfor %}
+                        <label></label>
+      
+                        <form method="post">
+                          <input type="hidden" name="getId" value={{ item.product_id}}>
+                          <button class="btn btn-primary">Buy Now</button>
+                        </form>
+                      </div>
+      
+                    </div>
+                  </div>
+      
+                </div>
+              </div>
+          {% endfor %}
+        </div>  
     </div>
-      
+        {% include 'footer.html'%}
 
-      
-      
-
-  
-
-  
-  
-  </section>
 
 {% endblock %}

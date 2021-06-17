@@ -15,196 +15,199 @@
 
 {% block body %}
 
-<body>
-        <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="product-content product-wrap clearfix product-deatil">
-            <div class="row">
-                <div class="col-md-5 col-sm-12 col-xs-12">
-                    <div class="product-image">
-                        <div id="myCarousel-2" class="carousel slide">
-                            <ol class="carousel-indicators">
-                                <li data-target="#myCarousel-2" data-slide-to="0" class=""></li>
-                                <li data-target="#myCarousel-2" data-slide-to="1" class="active"></li>
-                                <li data-target="#myCarousel-2" data-slide-to="2" class=""></li>
-                            </ol>
-                            <div class="carousel-inner">
-                                <!-- Slide 1 -->
-                                <div class="item ">
-                                    <figure class="figure" id="magnifying_area">
-                                        <img id="magnifying_img"
-                                            src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}"
-                                            class="figure-img img-fluid" alt="" />
-                                    </figure>
-                                </div>
-                                <!-- Slide 2 -->
-                                <div class="item active">
-                                    <figure class="figure" id="magnifying_area1">
-                                        <img id="magnifying_img1"
-                                            src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}"
-                                            class="figure-img img-fluid" alt="" />
-                                    </figure>
-                                </div>
-                                <!-- Slide 3 -->
-                                <div class="item">
-                                    <figure class="figure" id="magnifying_area2">
-                                        <img id="magnifying_img2"
-                                            src="{{url_for('static', filename='images/product/24-260-313-01.jpg')}}"
-                                            class="figure-img img-fluid" alt="" />
-                                    </figure>
-                                </div>
+
+    <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="product-content product-wrap clearfix product-deatil">
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="product-image">
+                    <div id="myCarousel-2" class="carousel slide">
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel-2" data-slide-to="0" class=""></li>
+                            <li data-target="#myCarousel-2" data-slide-to="1" class="active"></li>
+                            <li data-target="#myCarousel-2" data-slide-to="2" class=""></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <!-- Slide 1 -->
+                            <div class="item ">
+                                <figure class="figure" id="magnifying_area">
+                                    <img id="magnifying_img"
+                                        src="{{url_for('static', filename='images/product_images/'+ item.product_images['image1'])}}"   
+                                        class="figure-img img-fluid" alt="" />
+                                </figure>
                             </div>
-                            <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"> <span
-                                    class="glyphicon glyphicon-chevron-left"></span> </a>
-                            <a class="right carousel-control" href="#myCarousel-2" data-slide="next"> <span
-                                    class="glyphicon glyphicon-chevron-right"></span> </a>
+                            <!-- Slide 2 -->
+                            <div class="item active">
+                                <figure class="figure" id="magnifying_area1">
+                                    <img id="magnifying_img1"
+                                        src="{{url_for('static', filename='images/product_images/'+ item.product_images['image2'])}}"   
+                                        class="figure-img img-fluid" alt="" />
+                                </figure>
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="item">
+                                <figure class="figure" id="magnifying_area2">
+                                    <img id="magnifying_img2"
+                                        src="{{url_for('static', filename='images/product_images/'+ item.product_images['image3'])}}"   
+                                        class="figure-img img-fluid" alt="" />
+                                </figure>
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"> <span
+                                class="glyphicon glyphicon-chevron-left"></span> </a>
+                        <a class="right carousel-control" href="#myCarousel-2" data-slide="next"> <span
+                                class="glyphicon glyphicon-chevron-right"></span> </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
+                <h2 class="name">
+                    {{ item.product_name }}
+                    <small>Product by {{ item.company }}</small>
+                </h2>
+                <hr />
+                <h3 class="price-container">
+                    ₹ {{ item.product_price }}
+                    <small>*including GST(Sgst/Cgst)</small>
+                </h3>
+                <div class="certified">
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0);">Delivery time<span>7 Working Days</span></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">Certified<span>Quality Assured</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <hr />
+                <div class="description description-tabs">
+                    <ul id="myTab" class="nav nav-pills">
+                        <li class="active"><a href="#more-information" data-toggle="tab" class="no-margin">Product
+                                Description </a></li>
+                        <li class=""><a href="#specifications" data-toggle="tab">Specifications</a></li>
+                        <li class="" style="font-size: 15px; margin-left: 8px; color: rgb(60, 54, 54);">Availability:
+                          <div class="d-inline text-success" style="font-weight: bolder;">{{ itemStock }}</div></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="more-information">
+                            <br />
+                            <strong>Description Title</strong>
+                            <p>
+                                {{ item.product_desc }}
+                            </p>
+                        </div>
+                        <div class="tab-pane fade" id="specifications">
+                            <br />
+                            <dl class="">
+                                <dt>Gravina</dt>
+                                <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+                                <dd>Donec id elit non mi porta gravida at eget metus.</dd>
+                                <dd>Eget lacinia odio sem nec elit.</dd>
+                                <br />
+
+                                <dt>Test lists</dt>
+                                <dd>A description list is perfect for defining terms.</dd>
+                                <br />
+
+                                <dt>Altra porta</dt>
+                                <dd>Vestibulum id ligula porta felis euismod semper</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
-                    <h2 class="name">
-                        Product Title Here
-                        <small>Product by <a href="javascript:void(0);">Company Name</a></small>
-                    </h2>
-                    <hr />
-                    <h3 class="price-container">
-                        ₹ 9999.000
-                        <small>*including GST(Sgst/Cgst)</small>
-                    </h3>
-                    <div class="certified">
-                        <ul>
-                            <li>
-                                <a href="javascript:void(0);">Delivery time<span>7 Working Days</span></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">Certified<span>Quality Assured</span></a>
-                            </li>
-                        </ul>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <form method="post">
+                            <input type="hidden" name="addToCart" value="{{ item.product_id }}">
+                            <button class="btn btn-success btn-lg">Add to cart (₹{{ item.product_price }})</button>
+                        </form>
                     </div>
-                    <hr />
-                    <div class="description description-tabs">
-                        <ul id="myTab" class="nav nav-pills">
-                            <li class="active"><a href="#more-information" data-toggle="tab" class="no-margin">Product
-                                    Description </a></li>
-                            <li class=""><a href="#specifications" data-toggle="tab">Specifications</a></li>
-                            <li class="" style="font-size: 15px; margin-left: 8px; color: rgb(60, 54, 54);">Availability:
-                              <div class="d-inline text-success" style="font-weight: bolder;">In Stock</div></li>
-                        </ul>
-                        <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade active in" id="more-information">
-                                <br />
-                                <strong>Description Title</strong>
-                                <p>
-                                    Integer egestas, orci id condimentum eleifend, nibh nisi pulvinar eros, vitae ornare
-                                    massa neque ut orci. Nam aliquet lectus sed odio eleifend, at iaculis dolor egestas.
-                                    Nunc elementum pellentesque augue
-                                    sodales porta. Etiam aliquet rutrum turpis, feugiat sodales ipsum consectetur nec.
-                                </p>
-                            </div>
-                            <div class="tab-pane fade" id="specifications">
-                                <br />
-                                <dl class="">
-                                    <dt>Gravina</dt>
-                                    <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
-                                    <dd>Donec id elit non mi porta gravida at eget metus.</dd>
-                                    <dd>Eget lacinia odio sem nec elit.</dd>
-                                    <br />
-
-                                    <dt>Test lists</dt>
-                                    <dd>A description list is perfect for defining terms.</dd>
-                                    <br />
-
-                                    <dt>Altra porta</dt>
-                                    <dd>Vestibulum id ligula porta felis euismod semper</dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                            <a href="javascript:void(0);" class="btn btn-success btn-lg">Add to cart ($129.54)</a>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div class="btn-group pull-right">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="btn-group pull-right">
+                            <form method="post">
+                                <input type="hidden" name="addToWishlist" value="{{ item.product_id }}">
                                 <button class="btn btn-white btn-default"><i class="fa fa-heart"
-                                        style="color: rgb(221, 115, 133);"></i> Add to wishlist</button>
-                            </div>
+                                    style="color: rgb(221, 115, 133);"></i> Add to wishlist</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
+{% include 'footer.html'%}
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    var magnifying_area = document.getElementById("magnifying_area");
+    var magnifying_img = document.getElementById("magnifying_img");
+
+    magnifying_area.addEventListener("mousemove", function (event) {
+        clientX = event.clientX - magnifying_area.offsetLeft
+        clientY = event.clientY - magnifying_area.offsetTop
+
+        var mWidth = magnifying_area.offsetWidth
+        var mHeight = magnifying_area.offsetHeight
+        clientX = clientX / mWidth * 100
+        clientY = clientY / mHeight * 100
+
+        magnifying_img.style.transform = 'translate(-' + clientX + '%, -' + clientY + '%) scale(2)'
+    });
+
+    magnifying_area.addEventListener("mouseleave", function () {
+        magnifying_img.style.transform = 'translate(-50%,-50%) scale(1)'
+    });
+</script>
+
+<script type="text/javascript">
+    var magnifying_area1 = document.getElementById("magnifying_area1");
+    var magnifying_img1 = document.getElementById("magnifying_img1");
+
+    magnifying_area1.addEventListener("mousemove", function (event) {
+        clientX = event.clientX - magnifying_area1.offsetLeft
+        clientY = event.clientY - magnifying_area1.offsetTop
+
+        var mWidth = magnifying_area1.offsetWidth
+        var mHeight = magnifying_area1.offsetHeight
+        clientX = clientX / mWidth * 100
+        clientY = clientY / mHeight * 100
+
+        magnifying_img1.style.transform = 'translate(-' + clientX + '%, -' + clientY + '%) scale(2)'
+    });
+
+    magnifying_area1.addEventListener("mouseleave", function () {
+        magnifying_img1.style.transform = 'translate(-50%,-50%) scale(1)'
+    });
+</script>
 
 
+<script type="text/javascript">
+    var magnifying_area2 = document.getElementById("magnifying_area2");
+    var magnifying_img2 = document.getElementById("magnifying_img2");
 
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    magnifying_area2.addEventListener("mousemove", function (event) {
+        clientX = event.clientX - magnifying_area2.offsetLeft
+        clientY = event.clientY - magnifying_area2.offsetTop
 
-    <script type="text/javascript">
-        var magnifying_area = document.getElementById("magnifying_area");
-        var magnifying_img = document.getElementById("magnifying_img");
+        var mWidth = magnifying_area2.offsetWidth
+        var mHeight = magnifying_area2.offsetHeight
+        clientX = clientX / mWidth * 100
+        clientY = clientY / mHeight * 100
 
-        magnifying_area.addEventListener("mousemove", function (event) {
-            clientX = event.clientX - magnifying_area.offsetLeft
-            clientY = event.clientY - magnifying_area.offsetTop
+        magnifying_img2.style.transform = 'translate(-' + clientX + '%, -' + clientY + '%) scale(2)'
+    });
 
-            var mWidth = magnifying_area.offsetWidth
-            var mHeight = magnifying_area.offsetHeight
-            clientX = clientX / mWidth * 100
-            clientY = clientY / mHeight * 100
-
-            magnifying_img.style.transform = 'translate(-' + clientX + '%, -' + clientY + '%) scale(2)'
-        });
-
-        magnifying_area.addEventListener("mouseleave", function () {
-            magnifying_img.style.transform = 'translate(-50%,-50%) scale(1)'
-        });
-    </script>
-
-    <script type="text/javascript">
-        var magnifying_area1 = document.getElementById("magnifying_area1");
-        var magnifying_img1 = document.getElementById("magnifying_img1");
-
-        magnifying_area1.addEventListener("mousemove", function (event) {
-            clientX = event.clientX - magnifying_area1.offsetLeft
-            clientY = event.clientY - magnifying_area1.offsetTop
-
-            var mWidth = magnifying_area1.offsetWidth
-            var mHeight = magnifying_area1.offsetHeight
-            clientX = clientX / mWidth * 100
-            clientY = clientY / mHeight * 100
-
-            magnifying_img1.style.transform = 'translate(-' + clientX + '%, -' + clientY + '%) scale(2)'
-        });
-
-        magnifying_area1.addEventListener("mouseleave", function () {
-            magnifying_img1.style.transform = 'translate(-50%,-50%) scale(1)'
-        });
-    </script>
-
-
-    <script type="text/javascript">
-        var magnifying_area2 = document.getElementById("magnifying_area2");
-        var magnifying_img2 = document.getElementById("magnifying_img2");
-
-        magnifying_area2.addEventListener("mousemove", function (event) {
-            clientX = event.clientX - magnifying_area2.offsetLeft
-            clientY = event.clientY - magnifying_area2.offsetTop
-
-            var mWidth = magnifying_area2.offsetWidth
-            var mHeight = magnifying_area2.offsetHeight
-            clientX = clientX / mWidth * 100
-            clientY = clientY / mHeight * 100
-
-            magnifying_img2.style.transform = 'translate(-' + clientX + '%, -' + clientY + '%) scale(2)'
-        });
-
-        magnifying_area2.addEventListener("mouseleave", function () {
-            magnifying_img2.style.transform = 'translate(-50%,-50%) scale(1)'
-        });
-    </script>
+    magnifying_area2.addEventListener("mouseleave", function () {
+        magnifying_img2.style.transform = 'translate(-50%,-50%) scale(1)'
+    });
+</script>
 
 </body>
 
