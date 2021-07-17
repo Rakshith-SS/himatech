@@ -8,6 +8,7 @@ image1  = input("Product image1 [hard_disk.jpg] :")
 image2 = input("Product image2 :")
 image3 = input("Product image3 :")
 product_sold_totally = input("Product sold totally[default-0]: ")
+product_quantity_left = int(input("Enter Total Number of available products: "))
 category = input("Product Category: ")
 year_of_manufacture = input("Year of Manufacture: ")
 warranty = input("Product Warranty: ")
@@ -42,7 +43,7 @@ item = Items(
             specifications = { specification1: specification_value1,
                                specification2 : specification_value2,
                                specification3 : specification_value3,
-                               specification4 : specification_value4 
+                               specification4 : specification_value4
                             },
             company = company
             )
