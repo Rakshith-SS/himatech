@@ -34,6 +34,7 @@ item = Items(
                 'image3': image3
                 },
             product_sold_totally=product_sold_totally,
+            product_quantity_left=product_quantity_left,
             category=category,
             year_of_manufacture=year_of_manufacture,
             warranty=warranty,
