@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page</title>
+</head>
+<body>
+    {% for category, image in category.items() %}
+	<p>{{ category }}</p>
+	<img src="{{url_for('static', filename='/images/product_images/'+image) }}" width=255 height=200 >
+    {% endfor %}
+</body>
+</html>
+

@@ -3,7 +3,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -47,7 +47,7 @@
     <div class="logo">
       HimaTechnosoft
     </div>
-   
+
    <div class="nav-items">
    <!-- Navbar Items -->
     <li>
@@ -57,15 +57,15 @@
         <li>
              <a href="{{ url_for('wishlist') }}">Wishlist</a>
          </li>
-        
+
         <li>
             <a href="{{ url_for('cart') }}">Cart</a>
         </li>
-        
+
         <li>
             <a href="{{ url_for('orders') }}">Orders</a>
         </li>
-        
+
         <li>
             <a href="{{ url_for('account') }}">Account</a>
         </li>
@@ -128,7 +128,7 @@
                 {% for category, message in messages %}
                     <div class="alert alert-{{ category }}">
                         {{ message }}
-                    </div>    
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}

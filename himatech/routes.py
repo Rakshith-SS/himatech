@@ -15,10 +15,16 @@ from markupsafe import escape
 @app.route('/home')
 def index():
     item_category = []
+    category_image = []
     items = Items.query.all()
     for item in items:
-        item_category.append(item)
-    category = set(item_category)
+        item_category.append(item.category)
+    groups = set(item_category)
+    for group in groups:
+        images = Items.query.filter_by(category=group).first()
+        category_image.append(images.product_images['image1'])
+
+    category = dict(zip(groups, category_image))
     return render_template('index.html', category=category)
 
 @app.route('/signUpLogin', methods=['POST', 'GET'])
@@ -27,10 +33,10 @@ def signUpLogin():
     loginForm = LoginForm()
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    if registerForm.validate_on_submit() and request.form.get('register'): 
+    if registerForm.validate_on_submit() and request.form.get('register'):
         user = User(
             username=registerForm.username.data,
-            email=registerForm.email.data, 
+            email=registerForm.email.data,
             phonenumber= registerForm.mobileNumber.data
             )
         user.set_password(registerForm.password.data)
@@ -59,7 +65,7 @@ def logout():
 allowed_extensions = ['.jpeg', '.jpg', '.png']
 max_image_size = 2*1024*1024 #2MB
 # validates an image, generates a random name for the uploaded image and saves it to "profile_pictures" directory
-def saveProfilePic(picture): 
+def saveProfilePic(picture):
     fileName, fileExtension = os.path.splitext(picture.filename)
     if fileExtension in allowed_extensions:
         picture_size = picture.read()
@@ -68,7 +74,7 @@ def saveProfilePic(picture):
             pictureName = randomName + fileExtension
             filename = secure_filename(picture.filename)
             picture.save(os.getcwd() + "/himatech/static/images/profile_pictures/" + filename)
-            return 
+            return
         else:
             flash('Image size should be less than 2MB', 'danger')
     else:
@@ -78,11 +84,11 @@ def saveProfilePic(picture):
 @login_required
 def account():
     form = UpdateAccountInfo()
-    changePhoto = ChangeProfilePicture() 
+    changePhoto = ChangeProfilePicture()
     avatar = url_for('static', filename='/images/profile_pictures/'+current_user.avatar)
     if request.method=='POST' and request.form.get('picture'):
         pass
-        #picture = saveProfilePic(request.files['changePhoto']) 
+        #picture = saveProfilePic(request.files['changePhoto'])
         # picture = saveProfilePic(changePhoto.picture.data)
         # current_user.avatar = picture
         # db.session.commit()
@@ -113,7 +119,7 @@ def product_category(category):
         return render_template('404.html')
     else:
         itemStock = []
-        #stock of an item 
+        #stock of an item
         for item in items:
             itemName = Items.query.filter_by(product_name=item.product_name).first()
             if itemName.product_quantity_left > 0:
@@ -121,7 +127,7 @@ def product_category(category):
             else:
                 itemStock.append("Not Available")
         # Adding to Wishlist
-        if request.method == "POST" and request.form.get('product_id'): 
+        if request.method == "POST" and request.form.get('product_id'):
             if current_user.is_authenticated is False:
                 flash('Log in, to add items to your Wishlist', 'warning')
                 return redirect(url_for('signUpLogin'))
@@ -129,7 +135,7 @@ def product_category(category):
             product = Items.query.get(productId)
             if product is None:
                 return "Nice Please Tell Me, How you did this"
-            #check if the item is  already present on the wishlist 
+            #check if the item is  already present on the wishlist
             productName = product.product_name
             productImage = product.product_images['image1']
             productPrice = product.product_price
@@ -166,8 +172,8 @@ def product_category(category):
                             product_price=cartItem.product_price,
                             checkout = False
                             )
-                itemExist = Cart.query.filter_by(username=current_user.username, 
-                                                product_name=cartItem.product_name, 
+                itemExist = Cart.query.filter_by(username=current_user.username,
+                                                product_name=cartItem.product_name,
                                                 checkout=False).first()
                 # if an item already exists in Cart
                 if itemExist is not None:
@@ -203,8 +209,8 @@ def productinfo(productName):
                     product_price=item.product_price,
                     checkout = False
                     )
-        itemExist = Cart.query.filter_by(username=current_user.username, 
-                                        product_name=item.product_name, 
+        itemExist = Cart.query.filter_by(username=current_user.username,
+                                        product_name=item.product_name,
                                         checkout=False).first()
         # if an item already exists in Cart
         if itemExist is not None:
@@ -221,7 +227,7 @@ def productinfo(productName):
         if current_user.is_authenticated is False:
             flash(f'Log in, to add {item.product_name} to your Wishlist', 'warning')
             return redirect(url_for('signUpLogin'))
-        #check if the item is  already present on the wishlist 
+        #check if the item is  already present on the wishlist
         productName = item.product_name
         productImage = item.product_images['image1']
         productPrice = item.product_price
@@ -243,10 +249,10 @@ def productinfo(productName):
 def cart():
     form = RemoveCartItem()
     checkOut = GoToCheckout()
-    cartItems = Cart.query.filter_by(username=current_user.username, checkout=False).all() 
+    cartItems = Cart.query.filter_by(username=current_user.username, checkout=False).all()
     # Removing an item quantity from your Cart
     if request.method == 'POST' and request.form.get('itemMinus'):
-        cartItem = Cart.query.get(request.form.get('itemMinus'))        
+        cartItem = Cart.query.get(request.form.get('itemMinus'))
         if cartItem is None:
             return "Nice Tell me, how you got here"
         if cartItem.product_quantity == 1:
@@ -260,7 +266,7 @@ def cart():
         cartItem = Cart.query.get(request.form.get('itemMinus'))
         cartItem.product_quantity -= 1
         cartItem.product_price -= itemPrice
-        # Making Changes to item quantity 
+        # Making Changes to item quantity
         product = Items.query.filter_by(product_name=cartItem.product_name).first()
         product.product_quantity_left += 1
         db.session.commit()
@@ -268,7 +274,7 @@ def cart():
     # Increasing an item quantity from your cart
     if request.method=='POST' and request.form.get('itemPlus'):
         cartItem = Cart.query.get(request.form.get('itemPlus'))
-        itemName = Items.query.filter_by(product_name=cartItem.product_name).first() 
+        itemName = Items.query.filter_by(product_name=cartItem.product_name).first()
         if cartItem is None:
             return "Nice Tell me, how you got here"
         if itemName.product_quantity_left <= 0:
@@ -278,8 +284,8 @@ def cart():
             itemPrice = cartItem.product_price/cartItem.product_quantity
             cartItem = Cart.query.get(request.form.get('itemPlus'))
             cartItem.product_quantity += 1
-            cartItem.product_price += itemPrice 
-            # Making changes to item quantity  
+            cartItem.product_price += itemPrice
+            # Making changes to item quantity
             product = Items.query.filter_by(product_name=cartItem.product_name).first()
             product.product_quantity_left -= 1
             db.session.commit()
@@ -290,7 +296,7 @@ def cart():
         cartExist = Cart.query.get(cartId)
         if cartExist is None:
             return "Nice, Tell me how you got here"
-        # Making changes to item quantity 
+        # Making changes to item quantity
         itemName = Cart.query.get(cartId)
         product = Items.query.filter_by(product_name=itemName.product_name).first()
         product.product_quantity_left += itemName.product_quantity
@@ -355,7 +361,7 @@ def checkout():
 @login_required
 def orders():
     form = CancelOrder()
-    orders = Cart.query.filter_by(email=current_user.email, checkout=True).all()   
+    orders = Cart.query.filter_by(email=current_user.email, checkout=True).all()
     checkedOutTime = []
     shoppedItems = []
     orderedPrice = 0
@@ -366,13 +372,13 @@ def orders():
             checkedOutTime.append(item.checkoutTime)
     for orderedTime in checkedOutTime:
         orderedItems = Cart.query.filter_by(email=current_user.email, checkout=True, checkoutTime=orderedTime).all()
-        shoppedItems.append(orderedItems) 
+        shoppedItems.append(orderedItems)
         DeliveryDate.append(orderedTime + timedelta(days=3))
     #total price when more than two products are ordered at the same time
     for items in shoppedItems:
         if len(items) > 1:
             for item in items:
-                orderedPrice += item.product_price        
+                orderedPrice += item.product_price
             TotalPrice.append(orderedPrice)
             orderedPrice = 0
         else:
@@ -380,7 +386,7 @@ def orders():
                 TotalPrice.append(item.product_price)
     itemCount = len(DeliveryDate)
     if request.method=='POST':
-        flash(f"Under Construction", 'info') 
+        flash(f"Under Construction", 'info')
     if len(orders) == 0:
         return render_template('emptyorder.html')
     return render_template('myorders.html', shoppedItems= shoppedItems, form=form, DeliveryDate = DeliveryDate, TotalPrice=TotalPrice, itemCount = itemCount, checkedOutTime=checkedOutTime)
@@ -403,9 +409,9 @@ def wishlist():
     # add an Item from wishlist to a user's cart
     if request.method=='POST'  and request.form.get('addToCart'):
         item = Items.query.filter_by(product_name= request.form.get('addToCart')).first()
-        wishlistItem = Wishlist.query.get(request.form.get('addToCartId'))  
-        # check if the item is an instance of the class Items 
-        if isinstance(item, Items): 
+        wishlistItem = Wishlist.query.get(request.form.get('addToCartId'))
+        # check if the item is an instance of the class Items
+        if isinstance(item, Items):
             item.product_quantity_left -= 1
             if item.product_quantity_left <=0:
                 flash(f"{item.product_name} is out of stock", "danger")
@@ -429,7 +435,7 @@ def wishlist():
                 db.session.delete(wishlistItem)
                 db.session.commit()
                 flash(f'Successfully added {item.product_name} to your Cart', 'success')
-                return redirect(url_for('wishlist'))        
+                return redirect(url_for('wishlist'))
         else:
             return "Tell How You got to Wishlist"
 
@@ -448,10 +454,10 @@ def wishlist():
         db.session.commit()
         flash("Your Wishlist was successfully cleared!", "info")
         return redirect(url_for('wishlist'))
-    
+
     if len(wishlist) == 0:
-        return render_template('emptywishlist.html') 
-    
+        return render_template('emptywishlist.html')
+
     return render_template('wishlist.html', wishlist=wishlist, itemStock=itemStock, addToCart=addToCart )
 
 # Error Pages

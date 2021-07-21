@@ -3,367 +3,8 @@
 
 {% block head%}
 <link href="https://fonts.googleapis.com/css2?family=Martel:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
 <title>Home</title>
-<style>
-    body {
-        background-color: rgb(234, 237, 237);
-    }
-
-    .product {
-        padding: 20px 100px 0px;
-
-    }
-
-    .row-adjustment {
-        padding: 0%;
-    }
-
-    .imgwid {
-
-        width: 100%;
-    }
-
-    @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900|Rubik:300,400,500,700,900');
-
-    * {
-        margin: 0;
-        padding: 0;
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
-        text-shadow: rgba(0, 0, 0, .01) 0 0 1px
-    }
-
-    .p-2 {
-        font-family: 'Martel', serif;
-
-    }
-
-    body {
-        font-family: 'Rubik', sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-        background: #eff6fa;
-        color: #000000
-    }
-
-    div {
-        display: block;
-        position: relative;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box
-    }
-
-    .bbb_viewed {
-        padding-top: 10px;
-        padding-bottom: 60px;
-        background: #eff6fa
-    }
-
-    .bbb_main_container {
-        background-color: #fff;
-        padding: 11px
-    }
-
-    .bbb_viewed_title_container {
-        border-bottom: solid 1px #dadada
-    }
-
-    .bbb_viewed_title {
-        margin-bottom: 16px;
-        margin-top: 8px
-    }
-
-    .bbb_viewed_nav_container {
-        position: absolute;
-        right: -5px;
-        bottom: 14px
-    }
-
-    .bbb_viewed_nav {
-        display: inline-block;
-        cursor: pointer
-    }
-
-    .bbb_viewed_nav i {
-        color: #dadada;
-        font-size: 18px;
-        padding: 5px;
-        -webkit-transition: all 200ms ease;
-        -moz-transition: all 200ms ease;
-        -ms-transition: all 200ms ease;
-        -o-transition: all 200ms ease;
-        transition: all 200ms ease
-    }
-
-    .bbb_viewed_nav:hover i {
-        color: #606264
-    }
-
-    .bbb_viewed_prev {
-        margin-right: 15px
-    }
-
-    .bbb_viewed_slider_container {
-        padding-top: 13px
-    }
-
-    .bbb_viewed_item {
-        width: 100%;
-        background: #FFFFFF;
-        border-radius: 2px;
-        padding-top: 25px;
-        padding-bottom: 25px;
-        padding-left: 30px;
-        padding-right: 30px
-    }
-
-    .bbb_viewed_image {
-        width: 150px;
-        height: 150px
-    }
-
-    .bbb_viewed_image:hover img {
-        opacity: 1;
-        -webkit-animation: flash 1.5s;
-        animation: flash 1.5s;
-    }
-
-    @-webkit-keyframes flash {
-        0% {
-            opacity: .4;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes flash {
-        0% {
-            opacity: .4;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-
-    .bbb_viewed_image img {
-        display: block;
-        max-width: 100%
-    }
-
-    .bbb_viewed_content {
-        width: 100%;
-        margin-top: 25px
-    }
-
-    .bbb_viewed_price {
-        font-size: 18px;
-        color: #000000;
-        font-weight: 500
-    }
-
-    .bbb_viewed_item.discount .bbb_viewed_price {
-        color: #df3b3b
-    }
-
-    .bbb_viewed_price span {
-        position: relative;
-        font-size: 12px;
-        font-weight: 400;
-        color: rgba(0, 0, 0, 0.6);
-        margin-left: 8px
-    }
-
-    .bbb_viewed_price span::after {
-        display: block;
-        position: absolute;
-        top: 6px;
-        left: -2px;
-        width: calc(100% + 4px);
-        height: 1px;
-        background: #8d8d8d;
-        content: ''
-    }
-
-    .bbb_viewed_name {
-        margin-top: 3px
-    }
-
-    .bbb_viewed_name a {
-        font-size: 17px;
-        color: #000000;
-        -webkit-transition: all 200ms ease;
-        -moz-transition: all 200ms ease;
-        -ms-transition: all 200ms ease;
-        -o-transition: all 200ms ease;
-        transition: all 200ms ease
-    }
-
-    .bbb_viewed_name a:hover {
-        color: #0e8ce4
-    }
-
-    .item_marks {
-        position: absolute;
-        top: 18px;
-        left: 18px
-    }
-
-    .item_mark {
-        display: none;
-        width: 45px;
-        height: 45px;
-        border-radius: 60%;
-        color: #FFFFFF;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 45px;
-        text-align: center
-    }
-
-    .item_discount {
-        background: #df3b3b;
-        font-size: 13px;
-        line-height: 43px;
-    }
-
-    .item_new {
-        background: #0e8ce4
-    }
-
-    .bbb_viewed_item.discount .item_discount {
-        display: inline-block
-    }
-
-    .bbb_viewed_item.is_new .item_new {
-        display: inline-block
-    }
-
-    .wrap-image {
-        position: relative;
-    }
-
-    .hovereffect {
-        width: 100%;
-        height: 100%;
-        float: left;
-        overflow: hidden;
-        position: relative;
-        text-align: center;
-        cursor: default;
-    }
-
-    .hovereffect .overlay {
-        position: absolute;
-        overflow: hidden;
-        width: 80%;
-        height: 80%;
-        left: 10%;
-        top: 10%;
-        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
-        transition: opacity 0.35s, transform 0.35s;
-        -webkit-transform: scale(0, 1);
-        -ms-transform: scale(0, 1);
-        transform: scale(0, 1);
-    }
-
-    .hovereffect:hover .overlay {
-        opacity: 1;
-        filter: alpha(opacity=100);
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1);
-    }
-
-    .hovereffect img,
-    .hovereffect span {
-        display: block;
-        position: relative;
-        -webkit-transition: all 0.4s ease-in;
-        transition: all 0.4s ease-in;
-    }
-
-    .hovereffect:hover img,
-    .hovereffect:hover span {
-        filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /><feGaussianBlur stdDeviation="3" /></filter></svg>#filter');
-        filter: grayscale(1) blur(3px);
-        -webkit-filter: grayscale(1) blur(3px);
-        -webkit-transform: scale(1.2);
-        -ms-transform: scale(1.2);
-        transform: scale(1.2);
-    }
-
-    .hovereffect h2 {
-        text-transform: uppercase;
-        text-align: center;
-        position: relative;
-        font-size: 20px;
-        font-weight: bold;
-        background-color: rgb(29, 28, 28);
-        margin-top: 36px;
-        color: #FFF;
-        padding: 1em 0;
-        opacity: 0;
-        filter: alpha(opacity=0);
-        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
-        transition: opacity 0.35s, transform 0.35s;
-        -webkit-transform: translate3d(0, -100%, 0);
-        transform: translate3d(0, -100%, 0);
-    }
-
-    .hovereffect h2 {
-        -webkit-transform: scale(0.7);
-        -ms-transform: scale(0.7);
-        transform: scale(0.7);
-        -webkit-transition: all 0.4s ease-in;
-        transition: all 0.4s ease-in;
-        opacity: 0;
-        filter: alpha(opacity=0);
-        color: rgb(231, 226, 226);
-        text-transform: uppercase;
-    }
-
-
-
-    .hovereffect:hover h2 {
-        opacity: 1;
-        color: #df3b3b;
-        filter: alpha(opacity=50);
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1);
-    }
-
-    .ad-layout{
-        width: 23%; 
-        padding: 0.5%;
-    }
-
-    .product-layout{
-        width: 78%; 
-        margin-left: 0%;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .ad-hide {
-                display: none;
-                
-            }
-        .product-layout {
-            width: 100%;
-        }
-    }
-
-
-
-    
-
-
-</style>
 <script>
     $(document).ready(function () {
 
@@ -454,203 +95,39 @@
     </a>
 </div>
 
-<div class="d-flex ">
-    <div class="container-fluid product-full-width product-layout ml-5">
-
-        <div class="row mt-2 g-4">
-            {# start  #}
-            <div class="col-lg-4 col-md-6 ">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>Monitors</span> {# category 1#}
-                            </div>
-
-                            <div> <img src="{{url_for('static', filename='images/index/mn1.jpg')}}" height="130"
-                                    width="160" alt />
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {# end of category 1 #}
-            <div class="col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>KeyBoards</span>
-                            </div>
-                            <div> <img src=" {{url_for('static', filename='images/index/k4.jpg')}}" height="130"
-                                    width="160" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>Mouse</span></div>
-                            <div> <img src=" {{url_for('static', filename='images/index/mo4.jpg')}}" height="130"
-                                    width="160" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>CPU</span> </div>
-                            <div> <img src="{{url_for('static', filename='images/index/r7.jpg')}}" height="130"
-                                    width="160" /> </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class=" col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>Laptops</span>
-                            </div>
-                            <div> <img src="{{url_for('static', filename='images/index/r2.jpg')}}" height="130"
-                                    width="160" /> </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>Printers</span>
-                            </div>
-                            <div> <img src="{{url_for('static', filename='images/index/pr7.jpg')}}" height="130"
-                                    width="160" /> </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>CCTV</span> </div>
-                            <div> <img src="{{url_for('static', filename='images/index/cctv.jpg')}}" height="130"
-                                    width="160" /> </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>Refurbished</span>
-                            </div>
-                            <div> <img src="{{url_for('static', filename='images/index/refub.jpg')}}" height="130"
-                                    width="160" /> </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12   ">
-                <div class="hovereffect">
-                    <div class="card p-2">
-                        <div class="d-flex justify-content-between align-items-center p-2">
-                            <div class="flex-column lh-1 imagename" style="font-size: 22px;"> <span>Refurbished</span>
-                            </div>
-                            <div> <img src="{{url_for('static', filename='images/index/refub.jpg')}}" height="130"
-                                    width="160" /> </div>
-                        </div>
-                    </div>
-                    <div class="overlay">
-                        <a href="#" style="text-decoration: none;">
-                            <h2>Shop Now</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid ">
+    <div class="row mt-2 g-4 m-3" >
+	{# start for loop here #}
+	{% for category, image in category.items() %}
+	    <div class="col-lg-3 col-md-4">
+		<div class="hovereffect">
+		    <div class="card p-2">
+			<div class="d-flex justify-content-between align-items-center p-2">
+			    <div class="flex-column lh-1 imagename" style="font-size: 22px;">
+				<span>{{ category }}</span>
+			    </div>
+			    <div>
+				<img src="{{url_for('static', filename='images/product_images/'+ image)}}" height="130" width="160">
+			    </div>
+			</div>
+			<div class="overlay">
+			    <a href="{{url_for('product_category', category=category) }}" style="text-decoration: none;"><h2>Shop Now</h2></a>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	{%endfor%}
+	{# endfor loop here#}
     </div>
-
-    <div class="container ad-hide ad-layout" style="align-items: stretch;">
-        <div class="flex-fill" style="border: 2px solid;">
-
-            <div style="background-color: white;">
-                <h1>this place goes to ad
-                    this place goes to ad
-                    this place goes to ad
-                    this place goes to ad
-                    this place goes to ad
-                    this place goes to ad
-                    
-                </h1>
-                <img src="" alt="">
-            </div>
-
-        </div>
-    </div>
-
-
 </div>
-
-
 <!--End of Carousel-->
 
 
 <div class="container-fluid">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
-    <div class="bbb_viewed">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+<div class="bbb_viewed">
 
         <div class="row">
             <div class="col">
@@ -668,16 +145,15 @@
                                 <div
                                     class="bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹12225<span>₹13300</span></div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
-                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few
-                                            Left</div>
+                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few Left</div>
                                     </div>
                                     <ul class="item_marks">
-                                        <li class="d-flex flex-container item_mark item_discount">25%<p> Off</p>
-                                        </li>
+                                        <li class="d-flex flex-container item_mark item_discount">25%<p> Off</p></li>
                                         <li class="item_mark item_new">New</li>
                                     </ul>
                                 </div>
@@ -686,7 +162,8 @@
                                 <div
                                     class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹30079</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -702,7 +179,8 @@
                                 <div
                                     class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹22250</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -718,12 +196,12 @@
                                 <div
                                     class="bbb_viewed_item is_new d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹1379</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
-                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few
-                                            Left</div>
+                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few Left</div>
                                     </div>
                                     <ul class="item_marks">
                                         <li class="item_mark item_discount">-25%Off</li>
@@ -735,7 +213,8 @@
                                 <div
                                     class="bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹225<span>₹300</span></div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -751,7 +230,8 @@
                                 <div
                                     class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/mn1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹13275</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -770,7 +250,7 @@
         </div>
 
         <!-- computer accesories -->
-        <div class="row" style="margin-bottom: 0%;">
+        <div class="row">
             <div class="col">
                 <div class="bbb_main_container">
                     <div class="bbb_viewed_title_container">
@@ -786,16 +266,15 @@
                                 <div
                                     class="bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/ca1.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/ca1.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹12225<span>₹13300</span></div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
-                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few
-                                            Left</div>
+                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few Left</div>
                                     </div>
                                     <ul class="item_marks">
-                                        <li class="d-flex flex-container item_mark item_discount">25%<p> Off</p>
-                                        </li>
+                                        <li class="d-flex flex-container item_mark item_discount">25%<p> Off</p></li>
                                         <li class="item_mark item_new">New</li>
                                     </ul>
                                 </div>
@@ -804,7 +283,8 @@
                                 <div
                                     class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/ca2.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/ca2.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹30079</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -820,7 +300,8 @@
                                 <div
                                     class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/ca3.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/ca3.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹22250</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -836,12 +317,12 @@
                                 <div
                                     class="bbb_viewed_item is_new d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/ca4.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/ca4.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹1379</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
-                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few
-                                            Left</div>
+                                        <div class="d-inline text-warning" style="font-weight: bolder;">Hurry,Only Few Left</div>
                                     </div>
                                     <ul class="item_marks">
                                         <li class="item_mark item_discount">-25%Off</li>
@@ -853,7 +334,8 @@
                                 <div
                                     class="bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/ca5.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/ca5.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹225<span>₹300</span></div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -869,7 +351,8 @@
                                 <div
                                     class="bbb_viewed_item d-flex flex-column align-items-center justify-content-center text-center">
                                     <div class="bbb_viewed_image"><img
-                                            src="{{url_for('static', filename='images/index/ca6.jpg')}}" alt=""></div>
+                                            src="{{url_for('static', filename='images/index/ca6.jpg')}}"
+                                            alt=""></div>
                                     <div class="bbb_viewed_content text-center">
                                         <div class="bbb_viewed_price">₹13275</div>
                                         <div class="bbb_viewed_name"><a href="#">ProductName</a></div>
@@ -886,11 +369,16 @@
                 </div>
             </div>
         </div>
-    
     </div>
-   </div> 
+</div>
+
 </div>
 
 {% include 'footer.html' %}
+
+
+
+
+
 
 {% endblock %}

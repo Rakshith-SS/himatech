@@ -1,5 +1,5 @@
 from datetime import datetime
-from phonenumbers import phonenumber 
+from phonenumbers import phonenumber
 from himatech import db,login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -48,7 +48,7 @@ class Items(db.Model):
     discount_percent = db.Column(db.Integer)
     discount_price = db.Column(db.Integer)
     specifications = db.Column(db.JSON)
-    
+
     def __repr__(self):
         return f'Items <Product Name -{self.product_name} , Product Price - {self.product_price}, Category - {self.category}>'
 
@@ -59,7 +59,7 @@ class Wishlist(db.Model):
     wishlist_item_price = db.Column(db.Integer)
     username = db.Column(db.String(32))
     email = db.Column(db.String(120))
-    
+
     def __repr__(self):
         return f'Wishlist ({self.username}, {self.wishlist_item})'
 

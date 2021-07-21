@@ -12,7 +12,7 @@
     rel="stylesheet"
 />
 
-{% endblock head %} 
+{% endblock head %}
 {% block body%}
     <div
         class="container-fluid"
@@ -42,7 +42,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        {# Start For Loop here #} 
+                        {# Start For Loop here #}
                         {% for item in wishlist %}
                             <tbody>
                                 <tr>
@@ -76,9 +76,9 @@
                                                         style="font-weight:bolder ;"
                                                     >
                                                     {% if itemStock[loop.index -1 ] == "In Stock"%}
-                                                        <p style="color:#5cb85c;"> {{ itemStock[loop.index -1] }} </p>
+                                                        <span style="color:#5cb85c;"> {{ itemStock[loop.index -1] }} </span>
                                                     {% else %}
-                                                        <p style="color:#d94c4c;">{{ itemStock[loop.index-1] }}</p>
+                                                        <span style="color:#d94c4c;">{{ itemStock[loop.index-1] }}</span>
                                                     {% endif %}
                                                         <!-- Status of Availability -->
                                                     </div>
@@ -91,7 +91,7 @@
                                             <div class="tracking-details">
                                                <form method="post" novalidate>
                                                     {{ addToCart.hidden_tag() }}
-                                                    {{ addToCart.submit(class="btn btn-success") }}
+                                                    {{ addToCart.submit(class="btn btn-success mr-2") }}
                                                     <input type="hidden" name="addToCart" value="{{ item.wishlist_item }}">
                                                     <input type="hidden" name="addToCartId" value="{{ item.wishlist_id }}">
                                                 </form>
@@ -109,9 +109,9 @@
                                         </div>
                                     </td>
                                 </tr>
-                            </tbody> 
+                            </tbody>
                         {% endfor%}
-                        {# End for Loop here #} 
+                        {# End for Loop here #}
                     </table>
                 </div>
                 <hr class="mb-4" />
