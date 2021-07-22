@@ -40,7 +40,7 @@
                       </div>
                       <img src="{{ url_for('static', filename='images/product_images/'+ item.product_images['image1']) }}">
                       <div class="specifies">
-                        <h2 style="color: black;"><a href="{{ url_for('productinfo', productName= item.category ) }}">{{ item.product_name }}</a><br>
+                        <h2 style="color: black;"><a href="{{ url_for('productinfo', productName= item.product_name ) }}">{{ item.product_name }}</a><br>
                             {% if itemStock[loop.index -1] == "In Stock"%}
                                 <span style="color: #5cb85c; font-weight: bold;">
                                     {{ itemStock[loop.index -1]}}
@@ -53,9 +53,9 @@
                         </h2>
                         <div class="price">₹ {{ item.product_price }}</div><label>Quick glance at Specs</label>
 
-                        {% for key, value in item.specifications.items() %}
+                        {% for spec, feature in item.specifications.items() %}
                             <ul class="unorederd-list">
-                               <li>{{ key }} - {{ value }} </li>
+                               <li>{{ spec }} - {{ feature }} </li>
                             </ul>
                         {% endfor %}
                         <label></label>

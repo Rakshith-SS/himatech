@@ -49,38 +49,39 @@
     </div>
 
    <div class="nav-items">
-   <!-- Navbar Items -->
-    <li>
-        <a href="{{ url_for('index') }}">Home</a>
-    </li>
-    {% if current_user.is_authenticated %}
-        <li>
-             <a href="{{ url_for('wishlist') }}">Wishlist</a>
-         </li>
+       <!-- Navbar Items -->
+	<li>
+	    <a href="{{ url_for('index') }}">Home</a>
+	</li>
+	{% if current_user.is_authenticated %}
+	    <li>
+		 <a href="{{ url_for('wishlist') }}">Wishlist</a>
+	     </li>
 
-        <li>
-            <a href="{{ url_for('cart') }}">Cart</a>
-        </li>
+	    <li>
+		<a href="{{ url_for('cart') }}">Cart</a>
+	    </li>
 
-        <li>
-            <a href="{{ url_for('orders') }}">Orders</a>
-        </li>
+	    <li>
+		<a href="{{ url_for('orders') }}">Orders</a>
+	    </li>
 
-        <li>
-            <a href="{{ url_for('account') }}">Account</a>
-        </li>
+	    <li>
+		<a href="{{ url_for('account') }}">Account</a>
+	    </li>
 
-        <li>
-            <a href="{{ url_for('logout') }}">Logout</a>
-        </li>
-    {% else %}
-        <li>
-            <a href="{{ url_for('signUpLogin') }}">Log In</a>
-        </li>
-    {% endif %}
+	    <li>
+		<a href="{{ url_for('logout') }}">Logout</a>
+	    </li>
+	{% else %}
+	    <li>
+		<a href="{{ url_for('signUpLogin') }}">Log In</a>
+	    </li>
+	{% endif %}
     </div>
-    <div class="search-icon">
 
+    <!-- Search icon -->
+    <div class="search-icon">
       <span class="fas fa-search"></span>
     </div>
     <div class="cancel-icon">
@@ -136,7 +137,6 @@
 
 
   {% block body %} {% endblock body %}
-
 </body>
 
 </html>

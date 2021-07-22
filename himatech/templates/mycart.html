@@ -3,6 +3,12 @@
 {% block head%}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mycart.css') }}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet"
+    />
+
+
 {% endblock head%}
 
 {% block body %}
@@ -32,7 +38,7 @@
                     <tr>
                         <td>
                             <div class="product-item">
-                                <div class="product-thumb"> 
+                                <div class="product-thumb">
                                     <img src="{{url_for('static', filename='images/product_images/'+ item.product_image) }}" alt="Product"> {# image path #}
                                 </div>
                                 <div class="product-info">
@@ -46,7 +52,7 @@
                             <div class="qty mt-1">
                                 <form method="post" novalidate>
                                     <input type="hidden" name="itemMinus" value="{{ item.cart_id }}">
-                                    
+
                                     <button style="border:0px; border-color: #fff;">
                                         <span class="minus bg-dark" id="minus">-</span>
                                     </button>
@@ -71,10 +77,11 @@
                         </td>
                     </tr>
                     {% endfor %}
-                    </tbody>
-            </table>
-        </div>
-        <div class="shopping-cart-footer">
+                </tbody>
+	    </table>
+	</div>
+
+	<div class="shopping-cart-footer">
             <div class="column text-lg" style="font-weight: bold;">
                 <span>Grand Total: </span>
                 <span class="text-medium" style="font-weight: bold;">&#8377; {{ cartPrice }}</span>
@@ -83,13 +90,14 @@
 
         <div class="shopping-cart-footer">
             <div class="column">
-                <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">
+		<a class="btn btn-outline-secondary" href="{{ url_for('index') }}">
                     <i class="icon-arrow-left"></i>&nbsp;Back to Shopping
                 </a>
-            </div>
-            
+	    </div>
+
             <div class="column">
-            <a class="btn btn-success" href="{{ url_for('checkout') }}">Checkout</a></div>
+		<a class="btn btn-success" href="{{ url_for('checkout') }}">Checkout</a>
+	    </div>
         </div>
     </div>
 {% endblock body %}
