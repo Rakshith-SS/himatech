@@ -34,9 +34,14 @@
                                             <p class="mb-0">{{ current_user.email }}</p>
                                             <div class="text-muted"><small></small></div>
                                             <div class="mt-2">
-                                                <form action="" enctype="multipart/form-data" method="post">
-                                                    <input type="file" name="changePhoto" class="form-control-file" required >
-                                                    <input type="hidden" name="picture" value="2" >
+                                                <form enctype="multipart/form-data" method="post">
+						    {{ changePhoto.hidden_tag() }}
+						    {{ changePhoto.picture.label }}
+						    {{ changePhoto.picture(class="form-control-file") }}
+						    {% for error in changePhoto.picture.errors %}
+							<p style="color:#ec4646;">{{ error }}</p>
+						    {% endfor %}
+						    <input type="hidden" name="pictureField" value="1" >
                                                     <button class="btn btn-primary mt-2">
                                                         <i class="fa fa-fw fa-camera"></i>
                                                         <span> Change Photo </span>
@@ -81,7 +86,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="row">
                                                         <div class="col-12 col-sm-6 mb-3">
                                                             <div class="mb-2"><b>Change Password</b></div>
@@ -113,7 +118,7 @@
                                                                        <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
                                                                        {{ form.confirm_password(class="form-control", placeholder="••••••") }}
                                                                        {% for error in form.confirm_password.errors %}
-                                                                            <p style="color:#ec4646;">{{ error }}</p>
+                                                                            <p style="color: #ec4646;">{{ error }}</p>
                                                                        {% endfor %}
                                                                        </div>
                                                                 </div>
@@ -155,9 +160,12 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col d-flex justify-content-end">
+							    <input type="hidden" name="allFields" value="2">
                                                             {{ form.submit(class="btn btn-primary") }}
                                                         </div>
                                                     </div>
+						</div>
+					    </div>
                                         </form>
 
                                     </div>
