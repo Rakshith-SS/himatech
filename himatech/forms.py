@@ -18,7 +18,8 @@ namePattern = '^[a-zA-Z]\w+$'
 emailPattern = "^[a-zA-Z0-9_.]+[@][a-z]+(\.[a-z]+)?\.(com|net|edu|in|ch|org|info|fr|eu|io|de)$"
 numberpattern = r"^(\+91|0|)[0-9]{10}$"
 phone = re.compile(numberpattern)
-max_file_size = 2*1024*1024
+addressPattern = "[a-zA-Z0-9,\s\/#]+$"
+max_file_size = 2*1024*1024 # 2MB
 
 
 class LoginForm(FlaskForm):
@@ -247,6 +248,20 @@ class CheckOut(FlaskForm):
                         validate_choice=True
                         )
     submit = SubmitField('Confirm')
+
+    def validate_address(self, address):
+        if re.match(addressPattern, address.data):
+            pass
+        else:
+            raise ValidationError("No use of specail character other than 'spaces, #  and / ' is allowed")
+
+    def validate_company(self, company):
+        companyPattern = "[a-zA-Z\s]+$"
+        noCompanyGiven = "^$"
+        if re.match(companyPattern, company.data) or re.match(noCompanyGiven, company.data):
+            pass
+        else:
+            raise ValueError("Company name can only be a word with spaces only!")
 
     def validate_mobileNumber(self, mobileNumber):
         if phone.match(mobileNumber.data):
