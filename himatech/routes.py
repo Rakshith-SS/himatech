@@ -116,6 +116,7 @@ def account():
                                         email=current_user.email
                                         ).all()
         wishlistName = Wishlist.query.filter_by(
+
                                                 username=current_user.username,
                                                 email=current_user.email
                                                 ).all()
@@ -536,7 +537,7 @@ def wishlist():
                             email=current_user.email,
                             product_name=item.product_name,
                             product_quantity=1,
-                            product_image=item.product_image,
+                            product_image=item.product_images['image1'],
                             product_price=item.product_price,
                             checkout=False
                             )
