@@ -49,6 +49,12 @@
                                     <td>
                                         <div class="product-item">
                                             <div class="product-thumb" href="#">
+												<h4 class="product-title">
+													<a href="{{ url_for('productinfo', productName= item.wishlist_item) }}"
+														>{{ item.wishlist_item }}</a
+													>
+													<!-- Product Name -->
+												</h4>
                                                 <img
                                                     src="{{ url_for('static', filename='images/product_images/'+ item.wishlist_image )}}"
                                                     class="img-fluid"
@@ -56,12 +62,6 @@
                                                 />
                                             </div>
                                             <div class="product-info">
-                                                <h4 class="product-title">
-                                                    <a href="{{ url_for('productinfo', productName= item.wishlist_item) }}"
-                                                        >{{ item.wishlist_item }}</a
-                                                    >
-                                                    <!-- Product Name -->
-                                                </h4>
                                                 <div
                                                     class="text-lg text-medium text-muted"
                                                 >

@@ -21,7 +21,10 @@ PROFILES_PICTURES = os.getcwd() + '/himatech/static/images/profile_pictures/'
 def index():
     item_category = []
     category_image = []
+    # query the database, using a ORM
+    # and Retrieve all the categories
     items = Items.query.all()
+
     for item in items:
         item_category.append(item.category)
     groups = set(item_category)
